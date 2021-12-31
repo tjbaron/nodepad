@@ -6,7 +6,8 @@
     "start": "webpack serve",
     "build": "NODE_ENV=production webpack",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "update": "npx npm-check-updates -u"
+    "update": "npx npm-check-updates -u",
+    "deploy": "push-dir --dir=dist --branch=gh-pages"
   },
   "author": "",
   "license": "ISC",
