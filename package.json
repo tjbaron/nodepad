@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack serve",
-    "build": "NODE_ENV=production webpack",
+    "build": "NODE_ENV=production webpack; cp ./CNAME ./dist/CNAME",
     "test": "echo \"Error: no test specified\" && exit 1",
     "update": "npx npm-check-updates -u",
     "deploy": "push-dir --dir=dist --branch=gh-pages"
