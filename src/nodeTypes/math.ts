@@ -1,5 +1,33 @@
+import { evaluate } from 'mathjs';
 
 export const mathNodeTypes = [
+    {
+        type: "math_equation",
+        label: "math_equation",
+        description: "Arbitrary mathimatical expression",
+        inputs: (ports: any)  => (inputData: any) => {
+            const eqString = inputData?.equation?.string;
+            const inp = [];
+            if (eqString) {
+                const vars = eqString.match(/[a-zA-Z_]+[a-zA-Z0-9_]*/g) || [];
+                console.log(vars);
+                for (const v of vars) {
+                    console.log(v);
+                    inp.push({name: v, label: v, type: 'number'});
+                }
+            }    
+            return [
+                {name: 'equation', label: 'equation', type: 'string'},
+                ...inp
+            ]        
+        },
+        outputs: (ports: any) => [
+            ports.number()
+        ],
+        code: ({equation, ...data}: any) => {
+            return {number: evaluate(equation, data)};
+        },
+    },
     {
         type: "math_add",
         label: "math_add",
