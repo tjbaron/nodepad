@@ -35,6 +35,18 @@ export const portTypes = [
         controls: []
     },
     {
+        type: "boolean",
+        name: "boolean",
+        label: "boolean",
+        color: Colors.orange,
+        controls: [
+            Controls.checkbox({
+                name: "boolean",
+                label: "boolean"
+            })
+        ]
+    },
+    {
         type: "any",
         acceptTypes: ["any", "string", "number"] as string[],
         name: "any",
