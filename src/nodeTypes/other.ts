@@ -86,13 +86,18 @@ export const otherNodeTypes = [
         inputs: (ports: any) => [
             {name: 'data', label: 'data', type: 'any'},
             {name: 'query', label: 'query', type: 'string'},
+            {name: 'array', label: 'array', type: 'boolean'},
         ],
         outputs: (ports: any) => [
             {name: 'data', label: 'data', type: 'any'}
         ],
         code: (inputValues: any) => {
             const data = jsonpath.query(inputValues.data, inputValues.query);
-            return { data };
+            if (inputValues.array.boolean) {
+                return { data };
+            } else {
+                return { data: data?.[0] };
+            }
         },
     },
 ];
