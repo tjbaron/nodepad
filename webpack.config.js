@@ -7,7 +7,13 @@ module.exports = {
   mode: prod ? 'production' : 'development',
   entry: './src/index.tsx',
   output: {
+    filename: '[name].bundle.js',
     path: __dirname + '/dist/',
+  },
+  optimization: {
+    splitChunks: {
+      chunks: "all",
+    },
   },
   devServer: {
     port: 3000,

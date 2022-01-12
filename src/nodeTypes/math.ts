@@ -1,4 +1,3 @@
-import { evaluate } from 'mathjs';
 
 export const mathNodeTypes = [
     {
@@ -24,7 +23,8 @@ export const mathNodeTypes = [
         outputs: (ports: any) => [
             ports.number()
         ],
-        code: ({equation, ...data}: any) => {
+        code: async ({equation, ...data}: any) => {
+            const { evaluate } = await import('mathjs');
             return {number: evaluate(equation, data)};
         },
     },
