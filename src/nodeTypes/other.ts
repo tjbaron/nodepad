@@ -1,5 +1,7 @@
 import { popupData } from "../pages/HomePage";
 import jsonpath from "jsonpath";
+const xpath = require('xpath');
+const dom = require('xmldom').DOMParser;
 
 export const otherNodeTypes = [
     {
@@ -98,6 +100,24 @@ export const otherNodeTypes = [
             } else {
                 return { data: data?.[0] };
             }
+        },
+    },
+    {
+        type: "xml_select",
+        label: "xml_select",
+        description: "Select data from an xml string. See xpath on npm for syntax",
+        inputs: (ports: any) => [
+            {name: 'data', label: 'data', type: 'string'},
+            {name: 'query', label: 'query', type: 'string'},
+        ],
+        outputs: (ports: any) => [
+            {name: 'data', label: 'data', type: 'any'}
+        ],
+        code: (inputValues: any) => {
+            var doc = new dom().parseFromString(inputValues.data);
+            var data = xpath.select(inputValues.query, doc);
+            console.log(inputValues.data, inputValues.query, doc, data);
+            return { data };
         },
     },
 ];
