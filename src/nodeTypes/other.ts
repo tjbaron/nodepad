@@ -1,7 +1,7 @@
 import { popupData } from "../pages/HomePage";
 import jsonpath from "jsonpath";
 const xpath = require('xpath');
-const dom = require('xmldom').DOMParser;
+const dom = require('@xmldom/xmldom').DOMParser;
 
 export const otherNodeTypes = [
     {
