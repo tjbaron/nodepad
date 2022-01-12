@@ -42,12 +42,17 @@ export const otherNodeTypes = [
             {name: 'source', label: 'source', type: 'string'},
             {name: 'find', label: 'find', type: 'string'},
             {name: 'replace', label: 'replace', type: 'string'},
+            {name: 'all', label: 'all', type: 'boolean'},
         ],
         outputs: (ports: any) => [
             {name: 'string', type: 'string'}
         ],
         code: (inputValues: any) => {
-            return {string: inputValues.source.replace(inputValues.find, inputValues.replace)};
+            if (inputValues.all) {
+                return {string: inputValues.source.replaceAll(inputValues.find, inputValues.replace)};
+            } else {
+                return {string: inputValues.source.replace(inputValues.find, inputValues.replace)};
+            }
         },
     },
     {
@@ -95,7 +100,7 @@ export const otherNodeTypes = [
         ],
         code: (inputValues: any) => {
             const data = jsonpath.query(inputValues.data, inputValues.query);
-            if (inputValues.array.boolean) {
+            if (inputValues.array) {
                 return { data };
             } else {
                 return { data: data?.[0] };
@@ -111,12 +116,11 @@ export const otherNodeTypes = [
             {name: 'query', label: 'query', type: 'string'},
         ],
         outputs: (ports: any) => [
-            {name: 'data', label: 'data', type: 'any'}
+            {name: 'data', label: 'data', type: 'string'}
         ],
         code: (inputValues: any) => {
             var doc = new dom().parseFromString(inputValues.data);
-            var data = xpath.select(inputValues.query, doc);
-            console.log(inputValues.data, inputValues.query, doc, data);
+            var data = xpath.select(`string(${inputValues.query})`, doc);
             return { data };
         },
     },

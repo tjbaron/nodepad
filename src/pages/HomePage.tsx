@@ -306,8 +306,10 @@ const resolvePorts = (portType: any, data: any) => {
       return data.string
     case 'number':
       return data.number
+    case 'boolean':
+      return data.boolean
     case 'any':
-      return data.string || data.number
+      return data.string || data.number || data.boolean
     default:
       return data
   }
