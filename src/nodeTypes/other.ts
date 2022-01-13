@@ -1,7 +1,4 @@
 import { popupData } from "../pages/HomePage";
-import jsonpath from "jsonpath";
-const xpath = require('xpath');
-const dom = require('@xmldom/xmldom').DOMParser;
 
 export const otherNodeTypes = [
     {
@@ -98,7 +95,8 @@ export const otherNodeTypes = [
         outputs: (ports: any) => [
             {name: 'data', label: 'data', type: 'any'}
         ],
-        code: (inputValues: any) => {
+        code: async (inputValues: any) => {
+            const jsonpath = await import('jsonpath');
             const data = jsonpath.query(inputValues.data, inputValues.query);
             if (inputValues.array) {
                 return { data };
@@ -118,8 +116,10 @@ export const otherNodeTypes = [
         outputs: (ports: any) => [
             {name: 'data', label: 'data', type: 'string'}
         ],
-        code: (inputValues: any) => {
-            var doc = new dom().parseFromString(inputValues.data);
+        code: async (inputValues: any) => {
+            const { DOMParser } = await import('@xmldom/xmldom');
+            const xpath = await import('xpath');
+            var doc = new DOMParser().parseFromString(inputValues.data);
             var data = xpath.select(`string(${inputValues.query})`, doc);
             return { data };
         },
