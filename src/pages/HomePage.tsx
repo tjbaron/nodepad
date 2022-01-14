@@ -7,8 +7,11 @@ import { downloadText } from '../helpers/downloadText';
 import { portTypes } from '../portTypes';
 import { nodeTypes } from '../nodeTypes';
 import { importJson } from '../helpers/importJson';
+import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { useState } from 'react';
+import { renderChart } from '../nodeTypes/charts';
 
-let config: typeof FlumeConfig;
+let config: any; // typeof FlumeConfig
 const remakeFlume = (customNodes: any[] = []) => {
   config = new FlumeConfig();
   config.addRootNodeType({
@@ -119,6 +122,7 @@ export const HomePage = () => {
       </EditorHolder>
       <InputBox />
       {showNodeCreate > -2 && <NodeCreator customNodeTypes={customNodeTypes} setCustomNodeTypes={setCustomNodeTypes} setShowNodeCreate={setShowNodeCreate} />}
+      <LineChartPopup />
     </>;
 };
 
@@ -127,7 +131,7 @@ const NodeCreator = ({customNodeTypes, setCustomNodeTypes, setShowNodeCreate}: a
   const [nodeDesc, setNodeDesc] = React.useState("");
   const [inputs, setInputs] = React.useState([] as {name: string, type: string}[]);
   const [outputs, setOutputs] = React.useState([] as {name: string, type: string}[]);
-  return <Popup>
+  return <NewNodePopup>
     <Input placeholder="Node name" value={nodeName} onChange={(e) => setNodeName(e.target.value)} />
     <Input placeholder="Description" value={nodeDesc} onChange={(e) => setNodeDesc(e.target.value)} />
     {inputs.map((d, i) => {
@@ -160,7 +164,29 @@ const NodeCreator = ({customNodeTypes, setCustomNodeTypes, setShowNodeCreate}: a
       setCustomNodeTypes(newCustomNodes);
       setShowNodeCreate(-2);
     }}>Create Custom Node</Button>
-  </Popup>
+  </NewNodePopup>
+};
+
+const LineChartPopup = () => {
+  const [lineChartData, setLineChartData] = useState({
+    data: null, x: 'x', y: 'y', xistimestamp: false, onClose: null
+  });
+  renderChart.lineChart = setLineChartData;
+  if (!lineChartData?.data) return <></>;
+  return <ChartPopup>
+    <Button onClick={() => {
+      setLineChartData(null);
+      lineChartData.onClose?.();
+    }}>Close</Button>
+    <ResponsiveContainer>
+      <LineChart data={lineChartData.data}>
+        <Line type="monotone" dataKey={lineChartData.y} stroke="rgb(144,144,255)" />
+        {lineChartData.x && <XAxis dataKey={lineChartData.x} />}
+        <YAxis />
+        <Tooltip />
+      </LineChart>
+    </ResponsiveContainer>
+  </ChartPopup>
 };
 
 export const popupData = { display: null as (desc: string) => Promise<string> };
@@ -289,15 +315,25 @@ const CustomNodeTitle = styled.div`
 `;
 
 const Popup = styled.div`
-  position: absolute; top: 50%; left: 50%;
-  width: 300px; height: 500px;
-  margin-left: -150px; margin-top: -250px;
+  position: absolute;
   overflow: auto;
   background: black;
   border: 1px solid rgb(144,144,255);
   color: white;
   display: flex; flex-direction: column;
   overflow: scroll;
+`;
+
+const NewNodePopup = styled(Popup)`
+  top: 50%; left: 50%;
+  width: 300px; height: 500px;
+  margin-left: -150px; margin-top: -250px;
+`;
+
+const ChartPopup = styled(Popup)`
+  inset: 30px;
+  overflow: hidden;
+  color: black;
 `;
 
 const resolvePorts = (portType: any, data: any) => {
