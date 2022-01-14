@@ -1,4 +1,4 @@
-import { popupData } from "../pages/HomePage";
+import { popupData } from '../components/molecules/InputBox';
 
 export const otherNodeTypes = [
     {

@@ -1,38 +1,17 @@
 import styled from '@emotion/styled';
 import {
-  createFlumeTheme, FlumeConfig, FlumeThemeProvider, NodeEditor, RootEngine
+  createFlumeTheme, FlumeThemeProvider, NodeEditor
 } from "@tjbaron/flume";
 import * as React from 'react';
 import { downloadText } from '../helpers/downloadText';
-import { portTypes } from '../portTypes';
-import { nodeTypes } from '../nodeTypes';
 import { importJson } from '../helpers/importJson';
-import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import { useState } from 'react';
-import { renderChart } from '../nodeTypes/charts';
-
-let config: any; // typeof FlumeConfig
-const remakeFlume = (customNodes: any[] = []) => {
-  config = new FlumeConfig();
-  config.addRootNodeType({
-    type: "output",
-    label: "output",
-    description: "Output node",
-    inputs: (ports: any) => [
-      {name: 'result', label: 'result', type: 'any'},
-    ],
-  })
-  portTypes.forEach((p) => {
-    config.addPortType(p);
-  });
-  nodeTypes.forEach((n) => {
-    config.addNodeType(n);
-  });
-  customNodes.forEach((n) => {
-    config.addNodeType(makeNodeType(n));
-  });
-};
-remakeFlume();
+import { Popup } from '../components/atoms/Popup';
+import { Button } from '../components/atoms/Button';
+import { LineChartPopup } from '../components/molecules/ChartPopup';
+import { Input } from '../components/atoms/Input';
+import { InputBox } from '../components/molecules/InputBox';
+import { config, NodeType, remakeFlume, runEngine } from '../helpers/runEngine';
+import { NodeCreator } from '../components/molecules/NodeCreator';
 
 const downloadProject = (customNodes: any, graph: any) => {
   downloadText(`nodepad-export.json`, JSON.stringify({
@@ -126,124 +105,6 @@ export const HomePage = () => {
     </>;
 };
 
-const NodeCreator = ({customNodeTypes, setCustomNodeTypes, setShowNodeCreate}: any) => {
-  const [nodeName, setNodeName] = React.useState("");
-  const [nodeDesc, setNodeDesc] = React.useState("");
-  const [inputs, setInputs] = React.useState([] as {name: string, type: string}[]);
-  const [outputs, setOutputs] = React.useState([] as {name: string, type: string}[]);
-  return <NewNodePopup>
-    <Input placeholder="Node name" value={nodeName} onChange={(e) => setNodeName(e.target.value)} />
-    <Input placeholder="Description" value={nodeDesc} onChange={(e) => setNodeDesc(e.target.value)} />
-    {inputs.map((d, i) => {
-      return <Input placeholder={`Input ${i+1} name`} onChange={(e) => inputs[i].name = e.target.value} />
-    })}
-    <Button onClick={() => setInputs([...inputs, {name: '', type: 'string'}])}>Add Input</Button>
-    {outputs.map((d, i) => {
-      return <Input placeholder={`Input ${i+1} name`} onChange={(e) => outputs[i].name = e.target.value} />
-    })}
-    <Button onClick={() => setOutputs([...outputs, {name: '', type: 'string'}])}>Add Output</Button>
-    <Button onClick={() => {
-      if (
-        !nodeName ||
-        inputs.find((e) => !e.name) ||
-        outputs.find((e) => !e.name)
-      ) return;
-      const newNodeType: NodeType = {
-        type: nodeName,
-        description: nodeDesc,
-        inputs,
-        outputs,
-        testCases: [],
-        defaultOutput: {},
-      };
-      const newCustomNodes: NodeType[] = [
-        newNodeType,
-        ...customNodeTypes,
-      ];
-      remakeFlume(newCustomNodes);
-      setCustomNodeTypes(newCustomNodes);
-      setShowNodeCreate(-2);
-    }}>Create Custom Node</Button>
-  </NewNodePopup>
-};
-
-const LineChartPopup = () => {
-  const [lineChartData, setLineChartData] = useState({
-    data: null, x: 'x', y: 'y', xistimestamp: false, onClose: null
-  });
-  renderChart.lineChart = setLineChartData;
-  if (!lineChartData?.data) return <></>;
-  return <ChartPopup>
-    <Button onClick={() => {
-      setLineChartData(null);
-      lineChartData.onClose?.();
-    }}>Close</Button>
-    <ResponsiveContainer>
-      <LineChart data={lineChartData.data}>
-        <Line type="monotone" dataKey={lineChartData.y} stroke="rgb(144,144,255)" />
-        {lineChartData.x && <XAxis dataKey={lineChartData.x} />}
-        <YAxis />
-        <Tooltip />
-      </LineChart>
-    </ResponsiveContainer>
-  </ChartPopup>
-};
-
-export const popupData = { display: null as (desc: string) => Promise<string> };
-const InputBox = () => {
-  const [description, setDescription] = React.useState("");
-  const [callback, setCallback] = React.useState(null);
-  const [value, setValue] = React.useState("");
-  popupData.display = (desc: string) => {
-    return new Promise((resolve, reject) => {
-      setDescription(desc);
-      setCallback(() => resolve);
-    })
-  };
-  if (callback === null) {
-    return <></>;
-  }
-  return <Popup>
-    <p>{description}</p>
-    <Input value={value} onChange={(e) => setValue(e.target.value)} />
-    <Button onClick={() => {
-      callback(value);
-      setCallback(null);
-    }}>Submit</Button>
-  </Popup>
-};
-
-type NodeType = {
-  type: string,
-  description: string,
-  inputs: {name: string, type: string}[],
-  outputs: {name: string, type: string}[],
-  testCases: {input: any, output: any}[],
-  defaultOutput: any,
-};
-const makeNodeType = (d: NodeType) => {
-  const newNodeType = {
-    type: d.type,
-    label: d.type,
-    description: d.description,
-    inputs: () => d.inputs.map((e) => ({name: e.name, type: e.type, label: e.name})),
-    outputs: () => d.outputs.map((e) => ({name: e.name, type: e.type, label: e.name})),
-    code: (v: any) => {
-      testcase: for (const testCase of d.testCases) {
-        for (const testIn in testCase.input) {
-          if (testCase.input[testIn] === v[testIn]) {
-            continue testcase;
-          }
-        }
-        return testCase.output;
-      }
-      return d.defaultOutput || {};
-    },
-  };
-  console.log(newNodeType);
-  return newNodeType;
-};
-
 const EditorHeader = styled.div`
   position: absolute; top: 0px; left: 0px;
   height: 40px; width: 100%;
@@ -262,36 +123,7 @@ const EditorHolder = styled.div`
   right: 250px; bottom: 0px;
 `;
 
-const Button = styled.button`
-  margin: 5px; padding: 5px;
-  display: inline-block;
-  border: 1px solid rgb(144,144,255);
-  color: white;
-  cursor: pointer;
-  user-select: none;
-  background: black;
-  height: 30px;
-  box-sizing: border-box; 
-  :hover {
-    background: rgb(32,32,32);
-  }
-`;
 
-const Input = styled.input`
-  margin: 5px; padding: 5px;
-  border: 1px solid rgb(144,144,255);
-  color: white;
-  background: black;
-  outline: none;
-  height: 30px;
-  box-sizing: border-box; 
-  :hover {
-    background: rgb(32,32,32);
-  }
-  :focus {
-    border: 1px solid rgb(144,255,255);
-  }
-`;
 
 const CustomNodeList = styled.div`
   position: absolute; top: 40px; right: 0px;
@@ -313,61 +145,3 @@ const CustomNode = styled.div`
 const CustomNodeTitle = styled.div`
   font-size: 14px;
 `;
-
-const Popup = styled.div`
-  position: absolute;
-  overflow: auto;
-  background: black;
-  border: 1px solid rgb(144,144,255);
-  color: white;
-  display: flex; flex-direction: column;
-  overflow: scroll;
-`;
-
-const NewNodePopup = styled(Popup)`
-  top: 50%; left: 50%;
-  width: 300px; height: 500px;
-  margin-left: -150px; margin-top: -250px;
-`;
-
-const ChartPopup = styled(Popup)`
-  inset: 30px;
-  overflow: hidden;
-  color: black;
-`;
-
-const resolvePorts = (portType: any, data: any) => {
-  switch (portType) {
-    case 'string':
-      return data.string
-    case 'number':
-      return data.number
-    case 'boolean':
-      return data.boolean
-    case 'any':
-      return data.string || data.number || data.boolean
-    default:
-      return data
-  }
-}
-
-const runEngine = async (nodes: any, customNodeTypes: any) => {
-  const resolveNodes = async (node: any, inputValues: any, nodeType: any, context: any) => {
-    const foundNode: any = nodeTypes.find(({type}) => type === node.type) || customNodeTypes.find(({type}: any) => type === node.type);
-    if (foundNode?.code) {
-      try {
-        const result = await foundNode.code(inputValues);
-        return result;
-      } catch (e) {
-        console.warn(node.type, e);
-        return {};
-      }
-    }
-    console.warn(`No implementation for ${node.type}.`);
-    return {};
-  }
-
-  const engine = new RootEngine(config, resolvePorts, resolveNodes)
-  return await engine.resolveRootNode(nodes)
-}
-
