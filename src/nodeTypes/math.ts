@@ -12,7 +12,7 @@ export const mathNodeTypes = [
                 console.log(vars);
                 for (const v of vars) {
                     console.log(v);
-                    inp.push({name: v, label: v, type: 'number'});
+                    inp.push({name: v, label: v, type: 'any'});
                 }
             }    
             return [
@@ -21,7 +21,7 @@ export const mathNodeTypes = [
             ]        
         },
         outputs: (ports: any) => [
-            ports.number()
+            {name: 'number', label: 'number', type: 'any'},
         ],
         code: async ({equation, ...data}: any) => {
             const { evaluate } = await import('mathjs');

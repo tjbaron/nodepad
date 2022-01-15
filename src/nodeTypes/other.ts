@@ -124,4 +124,23 @@ export const otherNodeTypes = [
             return { data };
         },
     },
+    {
+        type: "add_values_to_array_object",
+        label: "add_values_to_array_object",
+        description: "add data from array items to array objects with key",
+        inputs: (ports: any) => [
+            {name: 'array_of_objects', label: 'array_of_objects', type: 'any'},
+            {name: 'array', label: 'array', type: 'any'},
+            {name: 'key', label: 'key', type: 'string'},
+        ],
+        outputs: (ports: any) => [
+            {name: 'data', label: 'data', type: 'any'}
+        ],
+        code: async (inputValues: any) => {
+            inputValues.array_of_objects.forEach((o: any, i: number) => {
+                o[inputValues.key] = inputValues.array[i];
+            });
+            return { data: inputValues.array_of_objects };
+        },
+    },
 ];
