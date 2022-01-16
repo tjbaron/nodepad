@@ -5,13 +5,12 @@ import {
 import * as React from 'react';
 import { downloadText } from '../helpers/downloadText';
 import { importJson } from '../helpers/importJson';
-import { Popup } from '../components/atoms/Popup';
 import { Button } from '../components/atoms/Button';
 import { LineChartPopup } from '../components/molecules/ChartPopup';
-import { Input } from '../components/atoms/Input';
 import { InputBox } from '../components/molecules/InputBox';
 import { config, NodeType, remakeFlume, runEngine } from '../helpers/runEngine';
 import { NodeCreator } from '../components/molecules/NodeCreator';
+import { CustomNodeItem } from '../components/molecules/CustomNode';
 
 const downloadProject = (customNodes: any, graph: any) => {
   downloadText(`nodepad-export.json`, JSON.stringify({
@@ -21,9 +20,10 @@ const downloadProject = (customNodes: any, graph: any) => {
 };
 
 export const HomePage = () => {
-    const [customNodeTypes, setCustomNodeTypes] = React.useState([] as {type: string, label: string, description: string, inputs: any, outputs: any}[]);
+    const [customNodeTypes, setCustomNodeTypes] = React.useState([] as NodeType[]);
     const [showNodeCreate, setShowNodeCreate] = React.useState(-2);
     const [nodes, setNodes] = React.useState({});
+    const [subgraph, setSubgraph] = React.useState(null as NodeType);
     const [key, setKey] = React.useState(0);
     // if (loading) return <div>loading...</div>;
     // if (error) return <div>error...</div>;
@@ -33,10 +33,10 @@ export const HomePage = () => {
         <Button onClick={() => downloadProject(customNodeTypes, nodes)}>Export</Button>
         <Button onClick={async () => {
           const f: any = await importJson();
-          console.log(f);
           setCustomNodeTypes(f.customNodes);
           setNodes(f.graph);
           setKey(key+1);
+          remakeFlume(f.customNodes);
         }}>Import</Button>
         <Button onClick={async () => {
           const result = await runEngine(nodes, customNodeTypes);
@@ -44,17 +44,19 @@ export const HomePage = () => {
         }}>Run</Button>
       </EditorHeader>
       <CustomNodeList>
-        <Button onClick={() => {
+        {!subgraph && <Button onClick={() => {
           setShowNodeCreate(-1);
-        }}>Add</Button>
+        }}>Add</Button>}
+        {subgraph && <Button onClick={() => {
+          setSubgraph(null);
+          setKey(key+1);
+        }}>Back</Button>}
         {customNodeTypes.map((n, i) => {
-          return <CustomNode key={i}>
-            <CustomNodeTitle>{n.type}</CustomNodeTitle>
-            <div>{n.description}</div>
-            <div>Inputs</div>
-            {n.inputs.map((p: any, j: any) => <div key={j}>{p.name} ({p.type})</div>)}
-            {n.outputs.map((p: any, j: any) => <div key={j}>{p.name} ({p.type})</div>)}
-          </CustomNode>
+          return <CustomNodeItem key={i} nodeData={n} onClick={() => {
+            n.subgraph = n.subgraph || {};
+            setSubgraph(n);
+            setKey(key+1);
+          }} />
         })}
       </CustomNodeList>
       <EditorHolder>
@@ -87,8 +89,8 @@ export const HomePage = () => {
                 key={customNodeTypes.length + key}
                 portTypes={config.portTypes}
                 nodeTypes={config.nodeTypes}
-                nodes={nodes}
-                onChange={setNodes}
+                nodes={subgraph ? subgraph.subgraph : nodes}
+                onChange={subgraph ? (d:any)=>subgraph.subgraph=d : setNodes}
                 defaultNodes={[
                   {
                     type: "output",
@@ -123,8 +125,6 @@ const EditorHolder = styled.div`
   right: 250px; bottom: 0px;
 `;
 
-
-
 const CustomNodeList = styled.div`
   position: absolute; top: 40px; right: 0px;
   width: 250px; bottom: 0px;
@@ -132,16 +132,4 @@ const CustomNodeList = styled.div`
   box-sizing: border-box; color: white;
   background: black; font-size: 10px;
   overflow: scroll;
-`;
-
-const CustomNode = styled.div`
-  line-height: 18px; padding: 5px;
-  box-sizing: border-box;
-  :hover {
-    background: rgb(32,32,32);
-  }
-`;
-
-const CustomNodeTitle = styled.div`
-  font-size: 14px;
 `;

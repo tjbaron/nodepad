@@ -2,6 +2,18 @@ import { popupData } from '../components/molecules/InputBox';
 
 export const otherNodeTypes = [
     {
+        // only used for subgraphs
+        type: "input",
+        label: "input",
+        description: "Only used for subgraphs",
+        outputs: (ports: any) => () => [
+            {name: 'data', label: 'data', type: 'any'},
+        ],
+        code: () => {
+            return { data: 1 };
+        },
+    },
+    {
         type: "input_string",
         label: "input_string",
         description: "Allows user to input a string",

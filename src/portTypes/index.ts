@@ -5,6 +5,7 @@ import {
 export const portTypes = [
     {
         type: "string",
+        acceptTypes: ["any", "string"] as string[],
         name: "string",
         label: "string",
         color: Colors.red,
@@ -17,6 +18,7 @@ export const portTypes = [
     },
     {
         type: "number",
+        acceptTypes: ["any", "number"] as string[],
         name: "number",
         label: "number",
         color: Colors.blue,
@@ -29,6 +31,7 @@ export const portTypes = [
     },
     {
         type: "date",
+        acceptTypes: ["any", "date"] as string[],
         name: "date",
         label: "date",
         color: Colors.purple,
@@ -36,6 +39,7 @@ export const portTypes = [
     },
     {
         type: "boolean",
+        acceptTypes: ["any", "boolean"] as string[],
         name: "boolean",
         label: "boolean",
         color: Colors.orange,
@@ -48,7 +52,7 @@ export const portTypes = [
     },
     {
         type: "any",
-        acceptTypes: ["any", "string", "number"] as string[],
+        acceptTypes: ["any", "string", "number", "date", "boolean"] as string[],
         name: "any",
         label: "any",
         color: Colors.gray,

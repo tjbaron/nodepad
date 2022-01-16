@@ -7,8 +7,10 @@ export type NodeType = {
     description: string,
     inputs: {name: string, type: string}[],
     outputs: {name: string, type: string}[],
-    testCases: {input: any, output: any}[],
-    defaultOutput: any,
+    // testCases: {input: any, output: any}[],
+    // defaultOutput: any,
+    subgraph?: any,
+    code?: any,
 };
 
 export let config: any; // typeof FlumeConfig
@@ -19,7 +21,7 @@ export const remakeFlume = (customNodes: any[] = []) => {
         label: "output",
         description: "Output node",
         inputs: (ports: any) => [
-        {name: 'result', label: 'result', type: 'any'},
+            {name: 'result', label: 'result', type: 'any'},
         ],
     })
     portTypes.forEach((p) => {
@@ -41,17 +43,17 @@ export const makeNodeType = (d: NodeType) => {
         description: d.description,
         inputs: () => d.inputs.map((e) => ({name: e.name, type: e.type, label: e.name})),
         outputs: () => d.outputs.map((e) => ({name: e.name, type: e.type, label: e.name})),
-        code: (v: any) => {
-            testcase: for (const testCase of d.testCases) {
-                for (const testIn in testCase.input) {
-                    if (testCase.input[testIn] === v[testIn]) {
-                        continue testcase;
-                    }
-                }
-                return testCase.output;
-            }
-            return d.defaultOutput || {};
-        },
+        // code: (v: any) => {
+        //     testcase: for (const testCase of d.testCases) {
+        //         for (const testIn in testCase.input) {
+        //             if (testCase.input[testIn] === v[testIn]) {
+        //                 continue testcase;
+        //             }
+        //         }
+        //         return testCase.output;
+        //     }
+        //     return d.defaultOutput || {};
+        // },
     };
     console.log(newNodeType);
     return newNodeType;
@@ -74,7 +76,7 @@ const resolvePorts = (portType: any, data: any) => {
 
 export const runEngine = async (nodes: any, customNodeTypes: any) => {
     const resolveNodes = async (node: any, inputValues: any, nodeType: any, context: any) => {
-        const foundNode: any = nodeTypes.find(({type}) => type === node.type) || customNodeTypes.find(({type}: any) => type === node.type);
+        const foundNode: NodeType = nodeTypes.find(({type}) => type === node.type) || customNodeTypes.find(({type}: any) => type === node.type);
         if (foundNode?.code) {
             try {
                 const result = await foundNode.code(inputValues);
@@ -83,6 +85,9 @@ export const runEngine = async (nodes: any, customNodeTypes: any) => {
                 console.warn(node.type, e);
                 return {};
             }
+        } else if (foundNode?.subgraph) {
+            console.log(`Running subgraph ${foundNode.type}`);
+            return runEngine(foundNode?.subgraph, customNodeTypes);
         }
         console.warn(`No implementation for ${node.type}.`);
         return {};

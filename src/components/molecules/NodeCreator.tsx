@@ -16,11 +16,11 @@ export const NodeCreator = ({customNodeTypes, setCustomNodeTypes, setShowNodeCre
             {inputs.map((d, i) => {
                 return <Input placeholder={`Input ${i+1} name`} onChange={(e) => inputs[i].name = e.target.value} />
             })}
-            <Button onClick={() => setInputs([...inputs, {name: '', type: 'string'}])}>Add Input</Button>
+            <Button onClick={() => setInputs([...inputs, {name: '', type: 'any'}])}>Add Input</Button>
             {outputs.map((d, i) => {
-                return <Input placeholder={`Input ${i+1} name`} onChange={(e) => outputs[i].name = e.target.value} />
+                return <Input placeholder={`Output ${i+1} name`} onChange={(e) => outputs[i].name = e.target.value} />
             })}
-            <Button onClick={() => setOutputs([...outputs, {name: '', type: 'string'}])}>Add Output</Button>
+            <Button onClick={() => setOutputs([...outputs, {name: '', type: 'any'}])}>Add Output</Button>
             <Button onClick={() => {
                 if (
                     !nodeName ||
@@ -32,8 +32,8 @@ export const NodeCreator = ({customNodeTypes, setCustomNodeTypes, setShowNodeCre
                     description: nodeDesc,
                     inputs,
                     outputs,
-                    testCases: [],
-                    defaultOutput: {},
+                    // testCases: [],
+                    // defaultOutput: {},
                 };
                 const newCustomNodes: NodeType[] = [
                     newNodeType,
@@ -43,6 +43,9 @@ export const NodeCreator = ({customNodeTypes, setCustomNodeTypes, setShowNodeCre
                 setCustomNodeTypes(newCustomNodes);
                 setShowNodeCreate(-2);
             }}>Create Custom Node</Button>
+            <Button onClick={() => {
+                setShowNodeCreate(-2);
+            }}>Cancel</Button>
         </NewNodePopup>
   };
 
