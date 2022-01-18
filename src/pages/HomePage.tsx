@@ -11,6 +11,7 @@ import { InputBox } from '../components/molecules/InputBox';
 import { config, NodeType, remakeFlume, runEngine } from '../helpers/runEngine';
 import { NodeCreator } from '../components/molecules/NodeCreator';
 import { CustomNodeItem } from '../components/molecules/CustomNode';
+import { uiState } from '../nodeTypes/other';
 
 const downloadProject = (customNodes: any, graph: any) => {
   downloadText(`nodepad-export.json`, JSON.stringify({
@@ -33,13 +34,13 @@ export const HomePage = () => {
         <Button onClick={() => downloadProject(customNodeTypes, nodes)}>Export</Button>
         <Button onClick={async () => {
           const f: any = await importJson();
+          remakeFlume(f.customNodes);
           setCustomNodeTypes(f.customNodes);
           setNodes(f.graph);
           setKey(key+1);
-          remakeFlume(f.customNodes);
         }}>Import</Button>
         <Button onClick={async () => {
-          const result = await runEngine(nodes, customNodeTypes);
+          const result = await runEngine(nodes, customNodeTypes, {});
           alert(JSON.stringify(result));
         }}>Run</Button>
       </EditorHeader>
@@ -48,12 +49,14 @@ export const HomePage = () => {
           setShowNodeCreate(-1);
         }}>Add</Button>}
         {subgraph && <Button onClick={() => {
+          uiState.selectedNode = null;
           setSubgraph(null);
           setKey(key+1);
         }}>Back</Button>}
         {customNodeTypes.map((n, i) => {
           return <CustomNodeItem key={i} nodeData={n} onClick={() => {
             n.subgraph = n.subgraph || {};
+            uiState.selectedNode = n;
             setSubgraph(n);
             setKey(key+1);
           }} />

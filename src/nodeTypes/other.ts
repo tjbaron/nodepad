@@ -1,4 +1,9 @@
 import { popupData } from '../components/molecules/InputBox';
+import { NodeType } from '../helpers/runEngine';
+
+export const uiState = {
+        selectedNode: null as NodeType
+};
 
 export const otherNodeTypes = [
     {
@@ -7,10 +12,12 @@ export const otherNodeTypes = [
         label: "input",
         description: "Only used for subgraphs",
         outputs: (ports: any) => () => [
-            {name: 'data', label: 'data', type: 'any'},
+            ...uiState?.selectedNode?.inputs?.map((n) => {
+                return { name: n.name, label: n.name, type: n.type };
+            }),
         ],
-        code: () => {
-            return { data: 1 };
+        code: (inputValues: any, graphInputs: any) => {
+            return { ...graphInputs };
         },
     },
     {
@@ -18,7 +25,7 @@ export const otherNodeTypes = [
         label: "input_string",
         description: "Allows user to input a string",
         inputs: (ports: any) => [
-            { name: "description", type: "string" }
+            { name: "description", label: "description", type: "string" }
         ],
         outputs: (ports: any) => [
             ports.string()
@@ -33,7 +40,7 @@ export const otherNodeTypes = [
         label: "input_number",
         description: "Allows user to input a number",
         inputs: (ports: any) => [
-            { name: "description", type: "string" }
+            { name: "description", label: "description", type: "string" }
         ],
         outputs: (ports: any) => [
             ports.number()

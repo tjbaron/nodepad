@@ -1,5 +1,6 @@
 import { FlumeConfig, RootEngine } from "@tjbaron/flume";
 import { nodeTypes } from "../nodeTypes";
+import { uiState } from "../nodeTypes/other";
 import { portTypes } from "../portTypes";
 
 export type NodeType = {
@@ -10,7 +11,7 @@ export type NodeType = {
     // testCases: {input: any, output: any}[],
     // defaultOutput: any,
     subgraph?: any,
-    code?: any,
+    code?: (nodeInputs: any, graphInputs?: any) => any,
 };
 
 export let config: any; // typeof FlumeConfig
@@ -20,9 +21,19 @@ export const remakeFlume = (customNodes: any[] = []) => {
         type: "output",
         label: "output",
         description: "Output node",
-        inputs: (ports: any) => [
-            {name: 'result', label: 'result', type: 'any'},
-        ],
+        inputs: (ports: any) => () => {
+            if (uiState?.selectedNode?.outputs) {
+                return [
+                    ...uiState?.selectedNode?.outputs?.map((n) => {
+                        return { name: n.name, label: n.name, type: n.type };
+                    }),
+                ];
+            } else {
+                return [
+                    {name: 'result', label: 'result', type: 'any'},
+                ];
+            }
+        }
     })
     portTypes.forEach((p) => {
         config.addPortType(p);
@@ -74,12 +85,12 @@ const resolvePorts = (portType: any, data: any) => {
     }
 }
 
-export const runEngine = async (nodes: any, customNodeTypes: any) => {
+export const runEngine = async (nodes: any, customNodeTypes: any, graphInputs: any) => {
     const resolveNodes = async (node: any, inputValues: any, nodeType: any, context: any) => {
         const foundNode: NodeType = nodeTypes.find(({type}) => type === node.type) || customNodeTypes.find(({type}: any) => type === node.type);
         if (foundNode?.code) {
             try {
-                const result = await foundNode.code(inputValues);
+                const result = await foundNode.code(inputValues, graphInputs);
                 return result;
             } catch (e) {
                 console.warn(node.type, e);
@@ -87,7 +98,7 @@ export const runEngine = async (nodes: any, customNodeTypes: any) => {
             }
         } else if (foundNode?.subgraph) {
             console.log(`Running subgraph ${foundNode.type}`);
-            return runEngine(foundNode?.subgraph, customNodeTypes);
+            return runEngine(foundNode?.subgraph, customNodeTypes, inputValues);
         }
         console.warn(`No implementation for ${node.type}.`);
         return {};
