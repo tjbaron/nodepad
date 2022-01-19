@@ -7,6 +7,34 @@ export const uiState = {
 
 export const otherNodeTypes = [
     {
+        type: "string",
+        label: "string",
+        description: "String type",
+        inputs: (ports: any) => [
+            { name: 'string', label: 'string', type: 'string' },
+        ],
+        outputs: (ports: any) => [
+            { name: 'string', label: 'string', type: 'string' },
+        ],
+        code: ({string}: any) => {
+            return { string };
+        },
+    },
+    {
+        type: "number",
+        label: "number",
+        description: "Number type",
+        inputs: (ports: any) => [
+            { name: 'number', label: 'number', type: 'number' },
+        ],
+        outputs: (ports: any) => [
+            { name: 'number', label: 'number', type: 'number' },
+        ],
+        code: ({number}: any) => {
+            return { number };
+        },
+    },
+    {
         // only used for subgraphs
         type: "input",
         label: "input",
@@ -69,6 +97,21 @@ export const otherNodeTypes = [
             } else {
                 return {string: inputValues.source.replace(inputValues.find, inputValues.replace)};
             }
+        },
+    },
+    {
+        type: "string_fallback",
+        label: "string_fallback",
+        description: "Use first input if not blank, otherwise use second",
+        inputs: (ports: any) => [
+            { name: 'string1', label: 'string1', type: 'string' },
+            { name: 'string2', label: 'string2', type: 'string' },
+        ],
+        outputs: (ports: any) => [
+            { name: 'string', label: 'string', type: 'string' },
+        ],
+        code: ({string1, string2}: any) => {
+            return { string: string1 || string2 };
         },
     },
     {
