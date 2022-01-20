@@ -14,7 +14,7 @@
   "dependencies": {
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
-    "@tjbaron/flume": "^0.7.1",
+    "@tjbaron/flume": "^0.7.2",
     "@types/jsonpath": "^0.2.0",
     "@types/react": "^17.0.36",
     "@types/react-dom": "^17.0.11",

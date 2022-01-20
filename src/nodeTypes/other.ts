@@ -7,6 +7,30 @@ export const uiState = {
 
 export const otherNodeTypes = [
     {
+        type: "if",
+        label: "if",
+        description: "If else",
+        inputs: (ports: any) => [
+            { name: '_if', label: 'if', type: 'boolean' },
+            { name: '_then', label: 'then', type: 'any', conditional: true },
+            { name: '_else', label: 'else', type: 'any', conditional: true },
+        ],
+        outputs: (ports: any) => (d: any) => {
+            return [
+                { name: 'result', label: 'result', type: 'any' },
+            ];
+        },
+        code: async (inputValues: any) => {
+            if (inputValues._if) {
+                const r = await inputValues._then();
+                return { result: r };
+            } else {
+                const r = await inputValues._else();
+                return { result: r };
+            }
+        },
+    },
+    {
         type: "string",
         label: "string",
         description: "String type",
