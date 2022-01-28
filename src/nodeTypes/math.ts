@@ -1,5 +1,48 @@
+import * as math from "mathjs"
+
+// List of operations from mathjs we want to make available
+const supported_operations = [
+    {name: "add", inputs: ["x", "y"]},
+    {name: "subtract", inputs: ["x", "y"]},
+    {name: "multiply", inputs: ["x", "y"]},
+    {name: "divide", inputs: ["x", "y"]},
+    {name: "mod", inputs: ["x", "y"]},
+    {name: "pow", inputs: ["x", "y"]},
+    {name: "abs", inputs: ["x"]},
+    {name: "floor", inputs: ["x"]},
+    {name: "ceil", inputs: ["x"]},
+    {name: "fix", inputs: ["x"]},
+    {name: "log", inputs: ["x"]},
+    {name: "log2", inputs: ["x"]},
+    {name: "log10", inputs: ["x"]},
+    {name: "exp", inputs: ["x"]},
+    {name: "gcd", inputs: ["x", "y"]},
+];
 
 export const mathNodeTypes = [
+    ...supported_operations.map((op) => {
+        return {
+            type: `math_${op.name}`,
+            label: `math_${op.name}`,
+            description: (math.help(math[op.name])?.toJSON() as any)?.description || "",
+            inputs: (ports: any) => [
+                ...op.inputs.map((e) => (
+                    { name: e, label: e, type: 'number' }
+                )),
+            ],
+            outputs: (ports: any) => [
+                {name: 'result', label: 'result', type: 'number'},
+            ],
+            code: async (inputValues: any) => {
+                // const math = await import('mathjs');
+                const math_op = math[op.name];
+                const result = math_op(
+                    ...op.inputs.map((e: any) => inputValues[e] as any)
+                );
+                return { result };
+            },
+        };
+    }),
     {
         type: "math_equation",
         label: "math_equation",
@@ -24,68 +67,8 @@ export const mathNodeTypes = [
             {name: 'number', label: 'number', type: 'any'},
         ],
         code: async ({equation, ...data}: any) => {
-            const { evaluate } = await import('mathjs');
-            return {number: evaluate(equation, data)};
-        },
-    },
-    {
-        type: "math_add",
-        label: "math_add",
-        description: "Addition operation",
-        inputs: (ports: any) => [
-            {name: 'a', label: 'a', type: 'number'},
-            {name: 'b', label: 'b', type: 'number'},
-        ],
-        outputs: (ports: any) => [
-            ports.number()
-        ],
-        code: (inputValues: any) => {
-            return {number: inputValues.a + inputValues.b};
-        },
-    },
-    {
-        type: "math_subtract",
-        label: "math_subtract",
-        description: "Subtract operation",
-        inputs: (ports: any) => [
-            {name: 'a', label: 'a', type: 'number'},
-            {name: 'b', label: 'b', type: 'number'},
-        ],
-        outputs: (ports: any) => [
-            ports.number()
-        ],
-        code: (inputValues: any) => {
-            return {number: inputValues.a - inputValues.b};
-        },
-    },
-    {
-        type: "math_multiply",
-        label: "math_multiply",
-        description: "Multiply operation",
-        inputs: (ports: any) => [
-            {name: 'a', label: 'a', type: 'number'},
-            {name: 'b', label: 'b', type: 'number'},
-        ],
-        outputs: (ports: any) => [
-            ports.number()
-        ],
-        code: (inputValues: any) => {
-            return {number: inputValues.a * inputValues.b};
-        },
-    },
-    {
-        type: "math_divide",
-        label: "math_divide",
-        description: "Divide operation",
-        inputs: (ports: any) => [
-            {name: 'a', label: 'a', type: 'number'},
-            {name: 'b', label: 'b', type: 'number'},
-        ],
-        outputs: (ports: any) => [
-            ports.number()
-        ],
-        code: (inputValues: any) => {
-            return {number: inputValues.a / inputValues.b};
+            // const math = await import('mathjs');
+            return {number: math.evaluate(equation, data)};
         },
     },
 ];
