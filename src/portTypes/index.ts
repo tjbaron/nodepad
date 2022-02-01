@@ -67,6 +67,14 @@ export const portTypes = [
         ]
     },
     {
+        type: "brain",
+        acceptTypes: ["brain"] as string[],
+        name: "brain",
+        label: "brain",
+        color: Colors.pink,
+        controls: []
+    },
+    {
         type: "any",
         acceptTypes: ["any", "string", "number", "date", "boolean", "stringarray", "numberarray"] as string[],
         name: "any",
