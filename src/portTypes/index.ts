@@ -17,6 +17,14 @@ export const portTypes = [
         ]
     },
     {
+        type: "stringarray",
+        acceptTypes: ["any", "stringarray"] as string[],
+        name: "stringarray",
+        label: "stringarray",
+        color: Colors.green,
+        controls: []
+    },
+    {
         type: "number",
         acceptTypes: ["any", "number"] as string[],
         name: "number",
@@ -28,6 +36,14 @@ export const portTypes = [
                 label: "number"
             })
         ]
+    },
+    {
+        type: "numberarray",
+        acceptTypes: ["any", "numberarray"] as string[],
+        name: "numberarray",
+        label: "numberarray",
+        color: Colors.yellow,
+        controls: []
     },
     {
         type: "date",
@@ -52,7 +68,7 @@ export const portTypes = [
     },
     {
         type: "any",
-        acceptTypes: ["any", "string", "number", "date", "boolean"] as string[],
+        acceptTypes: ["any", "string", "number", "date", "boolean", "stringarray", "numberarray"] as string[],
         name: "any",
         label: "any",
         color: Colors.gray,
