@@ -103,6 +103,71 @@ export const otherNodeTypes = [
         },
     },
     {
+        type: "input_files",
+        label: "input_files",
+        description: "Allows user to input 1 or more files",
+        inputs: (ports: any) => [],
+        outputs: (ports: any) => [
+            ports.filearray()
+        ],
+        code: async (inputValues: any) => {
+            return new Promise((resolve, reject) => {
+                const inp = document.createElement('input');
+                inp.setAttribute('type', 'file');
+                inp.setAttribute('multiple', 'true');
+                inp.onchange = () => {
+                    resolve({filearray: inp.files});
+                };
+                setTimeout(() => {
+                    inp.click();
+                }, 10);
+            });
+        },
+    },
+    {
+        type: "ascii_art",
+        label: "ascii_art",
+        description: "Ascii art from image files",
+        inputs: (ports: any) => [
+            ports.filearray(),
+        ],
+        outputs: (ports: any) => [
+            {name: 'string', type: 'string'},
+        ],
+        code: async ({filearray}: any) => {
+            const ramp = '＠％＃＊＋＝ー：。　';
+            return new Promise((resolve, reject) => {
+                let out = '';
+                var reader = new FileReader();
+                reader.onload = function(event){
+                    var img = new Image();
+                    img.onload = function(){
+                        const canvas = document.createElement('canvas');
+                        // canvas.style.position = "absolute";
+                        //document.body.append(canvas);
+                        const ctx = canvas.getContext('2d');
+                        canvas.width = 40;
+                        canvas.height = 30;
+                        ctx.drawImage(img,0,0,img.width,img.height,0,0,40,30);
+                        const d = ctx.getImageData(0, 0, 40, 30).data;
+                        for (var y=0; y<30; y++) {
+                            for (var x=0; x<40; x++) {
+                                const idx = y*(40*4) + x*4;
+                                const px = d[idx]; // gets the red value for each pixel
+                                out += ramp[Math.floor(px/(256/ramp.length))];
+                            }
+                            out += "\n";
+                        }
+                        //document.body.removeChild(canvas);
+                        resolve({ string: out });
+                    }
+                    img.src = event.target.result as any;
+                }
+                reader.readAsDataURL(filearray[0]); 
+            });            
+        },
+    },
+    {
         type: "string_replace",
         label: "string_replace",
         description: "Replace occurences of a string inside another string",

@@ -46,6 +46,14 @@ export const portTypes = [
         controls: []
     },
     {
+        type: "filearray",
+        acceptTypes: ["filearray", "any"] as string[],
+        name: "filearray",
+        label: "filearray",
+        color: Colors.magenta,
+        controls: []
+    },
+    {
         type: "date",
         acceptTypes: ["any", "date"] as string[],
         name: "date",
@@ -76,7 +84,7 @@ export const portTypes = [
     },
     {
         type: "any",
-        acceptTypes: ["any", "string", "number", "date", "boolean", "stringarray", "numberarray"] as string[],
+        acceptTypes: ["any", "string", "number", "date", "boolean", "stringarray", "numberarray", "filearray"] as string[],
         name: "any",
         label: "any",
         color: Colors.gray,
