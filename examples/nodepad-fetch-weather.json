@@ -1,0 +1,50 @@
+{
+  "graph": {
+    "bsZQUAS5Yl": {
+      "x": 0,
+      "y": 0,
+      "type": "output",
+      "width": 200,
+      "connections": {
+        "inputs": {
+          "result": [
+            {
+              "nodeId": "C8b_GsWy-w",
+              "portName": "body"
+            }
+          ]
+        },
+        "outputs": {}
+      },
+      "inputData": {
+        "result": {}
+      },
+      "root": true,
+      "id": "bsZQUAS5Yl"
+    },
+    "C8b_GsWy-w": {
+      "id": "C8b_GsWy-w",
+      "x": -279,
+      "y": -74.5,
+      "type": "http_fetch",
+      "width": 200,
+      "connections": {
+        "inputs": {},
+        "outputs": {
+          "body": [
+            {
+              "nodeId": "bsZQUAS5Yl",
+              "portName": "result"
+            }
+          ]
+        }
+      },
+      "inputData": {
+        "url": {
+          "string": "http://api.openweathermap.org/data/2.5/weather?q=Edmonton&appid=ea8e5b03b1d4784a0c23c7ecf904757e"
+        }
+      }
+    }
+  },
+  "customNodes": []
+}

@@ -1,0 +1,590 @@
+{
+  "graph": {
+    "_RRvyR6vib": {
+      "x": 681.2027469758073,
+      "y": 2.4700393325172882,
+      "type": "output",
+      "width": 200,
+      "connections": {
+        "inputs": {
+          "result": [
+            {
+              "nodeId": "NQ1g97jrKa",
+              "portName": "data"
+            }
+          ]
+        },
+        "outputs": {}
+      },
+      "inputData": {
+        "result": {}
+      },
+      "root": true,
+      "id": "_RRvyR6vib"
+    },
+    "6aaXFAKsvT": {
+      "id": "6aaXFAKsvT",
+      "x": -355,
+      "y": -58.5,
+      "type": "GoogleSheetsCells",
+      "width": 200,
+      "connections": {
+        "inputs": {
+          "APIKey": [
+            {
+              "nodeId": "Iq_1cl4-JH",
+              "portName": "string"
+            }
+          ],
+          "Sheet": [
+            {
+              "nodeId": "lmh8dOBd5C",
+              "portName": "string"
+            }
+          ]
+        },
+        "outputs": {
+          "Values": [
+            {
+              "nodeId": "CbBBBOg7xy",
+              "portName": "data"
+            }
+          ]
+        }
+      },
+      "inputData": {
+        "APIKey": {},
+        "Sheet": {},
+        "Range": {}
+      }
+    },
+    "CbBBBOg7xy": {
+      "id": "CbBBBOg7xy",
+      "x": -74,
+      "y": -66.5,
+      "type": "data_select",
+      "width": 200,
+      "connections": {
+        "inputs": {
+          "data": [
+            {
+              "nodeId": "6aaXFAKsvT",
+              "portName": "Values"
+            }
+          ]
+        },
+        "outputs": {
+          "data": [
+            {
+              "nodeId": "x_dYYN4aFW",
+              "portName": "array"
+            }
+          ]
+        }
+      },
+      "inputData": {
+        "data": {},
+        "query": {
+          "string": "$[*][0]"
+        },
+        "array": {
+          "boolean": true
+        }
+      }
+    },
+    "NQ1g97jrKa": {
+      "id": "NQ1g97jrKa",
+      "x": 430.41474654377924,
+      "y": -113.82488479262685,
+      "type": "line_chart",
+      "width": 200,
+      "connections": {
+        "inputs": {
+          "data": [
+            {
+              "nodeId": "x_dYYN4aFW",
+              "portName": "data"
+            }
+          ]
+        },
+        "outputs": {
+          "data": [
+            {
+              "nodeId": "_RRvyR6vib",
+              "portName": "result"
+            }
+          ]
+        }
+      },
+      "inputData": {
+        "data": {},
+        "x": {
+          "string": ""
+        },
+        "y": {
+          "string": "d"
+        },
+        "y2": {
+          "string": ""
+        },
+        "xistimestamp": {
+          "boolean": false
+        }
+      }
+    },
+    "aAu0vfz9et": {
+      "id": "aAu0vfz9et",
+      "x": -67.28110599078349,
+      "y": -305.529953917051,
+      "type": "json_parse",
+      "width": 200,
+      "connections": {
+        "inputs": {},
+        "outputs": {
+          "data": [
+            {
+              "nodeId": "x_dYYN4aFW",
+              "portName": "array_of_objects"
+            }
+          ]
+        }
+      },
+      "inputData": {
+        "json": {
+          "string": "[{},{},{},{},{}]"
+        }
+      }
+    },
+    "x_dYYN4aFW": {
+      "id": "x_dYYN4aFW",
+      "x": 182.488479262673,
+      "y": -281.566820276498,
+      "type": "add_values_to_array_object",
+      "width": 200,
+      "connections": {
+        "inputs": {
+          "array_of_objects": [
+            {
+              "nodeId": "aAu0vfz9et",
+              "portName": "data"
+            }
+          ],
+          "array": [
+            {
+              "nodeId": "CbBBBOg7xy",
+              "portName": "data"
+            }
+          ]
+        },
+        "outputs": {
+          "data": [
+            {
+              "nodeId": "NQ1g97jrKa",
+              "portName": "data"
+            }
+          ]
+        }
+      },
+      "inputData": {
+        "array_of_objects": {},
+        "array": {},
+        "key": {
+          "string": "d"
+        }
+      }
+    },
+    "Iq_1cl4-JH": {
+      "id": "Iq_1cl4-JH",
+      "x": -648,
+      "y": -204.5,
+      "type": "string",
+      "width": 200,
+      "connections": {
+        "inputs": {},
+        "outputs": {
+          "string": [
+            {
+              "nodeId": "6aaXFAKsvT",
+              "portName": "APIKey"
+            }
+          ]
+        }
+      },
+      "inputData": {
+        "string": {
+          "string": "abcdefg"
+        }
+      }
+    },
+    "lmh8dOBd5C": {
+      "id": "lmh8dOBd5C",
+      "x": -647,
+      "y": -60.5,
+      "type": "string",
+      "width": 200,
+      "connections": {
+        "inputs": {},
+        "outputs": {
+          "string": [
+            {
+              "nodeId": "6aaXFAKsvT",
+              "portName": "Sheet"
+            }
+          ]
+        }
+      },
+      "inputData": {
+        "string": {
+          "string": "abcdefg"
+        }
+      }
+    }
+  },
+  "customNodes": [
+    {
+      "type": "GoogleSheetsCells",
+      "description": "Get values from google sheets",
+      "inputs": [
+        {
+          "name": "APIKey",
+          "type": "any"
+        },
+        {
+          "name": "Sheet",
+          "type": "any"
+        },
+        {
+          "name": "Range",
+          "type": "any"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "Values",
+          "type": "any"
+        }
+      ],
+      "subgraph": {
+        "PQxl-xOmPW": {
+          "x": 434.1428571428572,
+          "y": -9.57142857142857,
+          "type": "output",
+          "width": 200,
+          "connections": {
+            "inputs": {
+              "result": [
+                {
+                  "nodeId": "1oCr-hv_mh",
+                  "portName": "data"
+                }
+              ],
+              "Values": [
+                {
+                  "nodeId": "1oCr-hv_mh",
+                  "portName": "data"
+                }
+              ]
+            },
+            "outputs": {}
+          },
+          "inputData": {
+            "Values": {}
+          },
+          "root": true,
+          "id": "PQxl-xOmPW"
+        },
+        "SEPr9-rsKt": {
+          "id": "SEPr9-rsKt",
+          "x": -414.8571428571429,
+          "y": -43.928571428571445,
+          "type": "http_fetch",
+          "width": 200,
+          "connections": {
+            "inputs": {
+              "url": [
+                {
+                  "nodeId": "CLpPdqMUaY",
+                  "portName": "string"
+                }
+              ]
+            },
+            "outputs": {
+              "body": [
+                {
+                  "nodeId": "slQSnuCdUp",
+                  "portName": "json"
+                }
+              ]
+            }
+          },
+          "inputData": {
+            "url": {
+              "string": ""
+            }
+          }
+        },
+        "gsJtg91CFF": {
+          "id": "gsJtg91CFF",
+          "x": -738.0000000000001,
+          "y": 0.5,
+          "type": "string_replace",
+          "width": 200,
+          "connections": {
+            "inputs": {
+              "replace": [
+                {
+                  "nodeId": "8sg30bWPuh",
+                  "portName": "Sheet"
+                }
+              ],
+              "source": [
+                {
+                  "nodeId": "cUWVXZVsrA",
+                  "portName": "string"
+                }
+              ]
+            },
+            "outputs": {
+              "string": [
+                {
+                  "nodeId": "CLpPdqMUaY",
+                  "portName": "source"
+                }
+              ]
+            }
+          },
+          "inputData": {
+            "source": {
+              "string": "https://sheets.googleapis.com/v4/spreadsheets/{SHEETID}/values/{RANGE}?key={KEY}"
+            },
+            "find": {
+              "string": "{SHEETID}"
+            },
+            "replace": {
+              "string": "1vY3QCn-2bNixpxOcKgC3nlwcbk9ZJey5UBaqza3ge2M"
+            },
+            "all": {
+              "boolean": false
+            }
+          }
+        },
+        "cUWVXZVsrA": {
+          "id": "cUWVXZVsrA",
+          "x": -735.4285016741072,
+          "y": -276.92857142857144,
+          "type": "string_replace",
+          "width": 200,
+          "connections": {
+            "inputs": {
+              "replace": [
+                {
+                  "nodeId": "8sg30bWPuh",
+                  "portName": "APIKey"
+                }
+              ]
+            },
+            "outputs": {
+              "string": [
+                {
+                  "nodeId": "gsJtg91CFF",
+                  "portName": "source"
+                }
+              ]
+            }
+          },
+          "inputData": {
+            "source": {
+              "string": "https://sheets.googleapis.com/v4/spreadsheets/{SHEETID}/values/{RANGE}?key={KEY}"
+            },
+            "find": {
+              "string": "{KEY}"
+            },
+            "replace": {
+              "string": "AIzaSyBGkZhS7ndUEVCpvFgU7p2UNVHwr0T-Aps"
+            },
+            "all": {
+              "boolean": false
+            }
+          }
+        },
+        "slQSnuCdUp": {
+          "id": "slQSnuCdUp",
+          "x": -136.5714285714286,
+          "y": -33.07142857142857,
+          "type": "json_parse",
+          "width": 200,
+          "connections": {
+            "inputs": {
+              "json": [
+                {
+                  "nodeId": "SEPr9-rsKt",
+                  "portName": "body"
+                }
+              ]
+            },
+            "outputs": {
+              "data": [
+                {
+                  "nodeId": "1oCr-hv_mh",
+                  "portName": "data"
+                }
+              ]
+            }
+          },
+          "inputData": {
+            "json": {
+              "string": ""
+            }
+          }
+        },
+        "CLpPdqMUaY": {
+          "id": "CLpPdqMUaY",
+          "x": -732.5714285714287,
+          "y": 255.50000000000006,
+          "type": "string_replace",
+          "width": 200,
+          "connections": {
+            "inputs": {
+              "source": [
+                {
+                  "nodeId": "gsJtg91CFF",
+                  "portName": "string"
+                }
+              ],
+              "replace": [
+                {
+                  "nodeId": "hS4HcArhbM",
+                  "portName": "string"
+                }
+              ]
+            },
+            "outputs": {
+              "string": [
+                {
+                  "nodeId": "SEPr9-rsKt",
+                  "portName": "url"
+                }
+              ]
+            }
+          },
+          "inputData": {
+            "source": {
+              "string": ""
+            },
+            "find": {
+              "string": "{RANGE}"
+            },
+            "replace": {
+              "string": "A1:J20"
+            },
+            "all": {
+              "boolean": false
+            }
+          }
+        },
+        "1oCr-hv_mh": {
+          "id": "1oCr-hv_mh",
+          "x": 146.57142857142858,
+          "y": -56.928571428571445,
+          "type": "data_select",
+          "width": 200,
+          "connections": {
+            "inputs": {
+              "data": [
+                {
+                  "nodeId": "slQSnuCdUp",
+                  "portName": "data"
+                }
+              ]
+            },
+            "outputs": {
+              "data": [
+                {
+                  "nodeId": "PQxl-xOmPW",
+                  "portName": "result"
+                },
+                {
+                  "nodeId": "PQxl-xOmPW",
+                  "portName": "Values"
+                }
+              ]
+            }
+          },
+          "inputData": {
+            "data": {},
+            "query": {
+              "string": "$.values"
+            },
+            "array": {
+              "boolean": false
+            }
+          }
+        },
+        "8sg30bWPuh": {
+          "id": "8sg30bWPuh",
+          "x": -1251.4285888671875,
+          "y": -8.857147216796875,
+          "type": "input",
+          "width": 200,
+          "connections": {
+            "inputs": {},
+            "outputs": {
+              "Sheet": [
+                {
+                  "nodeId": "gsJtg91CFF",
+                  "portName": "replace"
+                }
+              ],
+              "APIKey": [
+                {
+                  "nodeId": "cUWVXZVsrA",
+                  "portName": "replace"
+                }
+              ],
+              "Range": [
+                {
+                  "nodeId": "hS4HcArhbM",
+                  "portName": "string1"
+                }
+              ]
+            }
+          },
+          "inputData": {}
+        },
+        "hS4HcArhbM": {
+          "id": "hS4HcArhbM",
+          "x": -1004,
+          "y": 190.5,
+          "type": "string_fallback",
+          "width": 200,
+          "connections": {
+            "inputs": {
+              "string1": [
+                {
+                  "nodeId": "8sg30bWPuh",
+                  "portName": "Range"
+                }
+              ]
+            },
+            "outputs": {
+              "string": [
+                {
+                  "nodeId": "CLpPdqMUaY",
+                  "portName": "replace"
+                }
+              ]
+            }
+          },
+          "inputData": {
+            "string1": {
+              "string": ""
+            },
+            "string2": {
+              "string": "A1:Z100"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

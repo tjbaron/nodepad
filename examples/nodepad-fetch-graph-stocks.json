@@ -1,0 +1,516 @@
+{
+  "graph": {
+    "pH-GoemVQK": {
+      "x": 798.0000031300083,
+      "y": 16.025641025641022,
+      "type": "output",
+      "width": 200,
+      "connections": {
+        "inputs": {
+          "result": [
+            {
+              "nodeId": "7AlHIktEWO",
+              "portName": "data"
+            }
+          ]
+        },
+        "outputs": {}
+      },
+      "inputData": {
+        "result": {}
+      },
+      "root": true,
+      "id": "pH-GoemVQK"
+    },
+    "2u60NDOwOE": {
+      "id": "2u60NDOwOE",
+      "x": -494,
+      "y": -58.5,
+      "type": "http_fetch",
+      "width": 200,
+      "connections": {
+        "inputs": {
+          "url": [
+            {
+              "nodeId": "09tLLIoqgT",
+              "portName": "string"
+            }
+          ]
+        },
+        "outputs": {
+          "body": [
+            {
+              "nodeId": "S990at1TQg",
+              "portName": "json"
+            }
+          ]
+        }
+      },
+      "inputData": {
+        "url": {
+          "string": "https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/day/2021-04-22/2021-07-22?adjusted=true&sort=asc&limit=120&apiKey=MQC772yyehFPcRrkUAucY142wQsRK8AI"
+        }
+      }
+    },
+    "S990at1TQg": {
+      "id": "S990at1TQg",
+      "x": -249,
+      "y": -16.5,
+      "type": "json_parse",
+      "width": 200,
+      "connections": {
+        "inputs": {
+          "json": [
+            {
+              "nodeId": "2u60NDOwOE",
+              "portName": "body"
+            }
+          ]
+        },
+        "outputs": {
+          "data": [
+            {
+              "nodeId": "LK3Q4l6GyZ",
+              "portName": "data"
+            }
+          ]
+        }
+      },
+      "inputData": {
+        "json": {
+          "string": ""
+        }
+      }
+    },
+    "7AlHIktEWO": {
+      "id": "7AlHIktEWO",
+      "x": 505.6153908754008,
+      "y": -7.858980618990387,
+      "type": "line_chart",
+      "width": 200,
+      "connections": {
+        "inputs": {
+          "data": [
+            {
+              "nodeId": "8ih8P_hWI4",
+              "portName": "data"
+            }
+          ]
+        },
+        "outputs": {
+          "data": [
+            {
+              "nodeId": "pH-GoemVQK",
+              "portName": "result"
+            }
+          ]
+        }
+      },
+      "inputData": {
+        "data": {},
+        "x": {
+          "string": "t"
+        },
+        "y": {
+          "string": "c"
+        },
+        "y2": {
+          "string": "tsla"
+        },
+        "y3": {
+          "string": ""
+        },
+        "xistimestamp": {
+          "boolean": true
+        }
+      }
+    },
+    "LK3Q4l6GyZ": {
+      "id": "LK3Q4l6GyZ",
+      "x": -19,
+      "y": -79.5,
+      "type": "data_select",
+      "width": 200,
+      "connections": {
+        "inputs": {
+          "data": [
+            {
+              "nodeId": "S990at1TQg",
+              "portName": "data"
+            }
+          ]
+        },
+        "outputs": {
+          "data": [
+            {
+              "nodeId": "8ih8P_hWI4",
+              "portName": "array_of_objects"
+            }
+          ]
+        }
+      },
+      "inputData": {
+        "data": {},
+        "query": {
+          "string": "$.results"
+        },
+        "array": {
+          "boolean": false
+        }
+      }
+    },
+    "Z6QWEUrfvb": {
+      "id": "Z6QWEUrfvb",
+      "x": -1185.4444715711818,
+      "y": -324.38890245225724,
+      "type": "string_replace",
+      "width": 200,
+      "connections": {
+        "inputs": {},
+        "outputs": {
+          "string": [
+            {
+              "nodeId": "bgkbInu9wQ",
+              "portName": "source"
+            }
+          ]
+        }
+      },
+      "inputData": {
+        "source": {
+          "string": "https://api.polygon.io/v2/aggs/ticker/{STOCK}/range/1/day/{START}/{END}?adjusted=true&sort=asc&limit=120&apiKey=MQC772yyehFPcRrkUAucY142wQsRK8AI"
+        },
+        "find": {
+          "string": "{STOCK}"
+        },
+        "replace": {
+          "string": "SPGI"
+        },
+        "all": {
+          "boolean": false
+        }
+      }
+    },
+    "bgkbInu9wQ": {
+      "id": "bgkbInu9wQ",
+      "x": -956.5452398255813,
+      "y": -282.5000141942224,
+      "type": "string_replace",
+      "width": 200,
+      "connections": {
+        "inputs": {
+          "source": [
+            {
+              "nodeId": "Z6QWEUrfvb",
+              "portName": "string"
+            }
+          ]
+        },
+        "outputs": {
+          "string": [
+            {
+              "nodeId": "09tLLIoqgT",
+              "portName": "source"
+            }
+          ]
+        }
+      },
+      "inputData": {
+        "source": {
+          "string": ""
+        },
+        "find": {
+          "string": "{START}"
+        },
+        "replace": {
+          "string": "2020-01-01"
+        },
+        "all": {
+          "boolean": false
+        }
+      }
+    },
+    "09tLLIoqgT": {
+      "id": "09tLLIoqgT",
+      "x": -732.1757471838663,
+      "y": -282.55427160928417,
+      "type": "string_replace",
+      "width": 200,
+      "connections": {
+        "inputs": {
+          "source": [
+            {
+              "nodeId": "bgkbInu9wQ",
+              "portName": "string"
+            }
+          ]
+        },
+        "outputs": {
+          "string": [
+            {
+              "nodeId": "2u60NDOwOE",
+              "portName": "url"
+            }
+          ]
+        }
+      },
+      "inputData": {
+        "source": {
+          "string": ""
+        },
+        "find": {
+          "string": "{END}"
+        },
+        "replace": {
+          "string": "2022-01-13"
+        },
+        "all": {
+          "boolean": false
+        }
+      }
+    },
+    "PJIYQUqXg3": {
+      "id": "PJIYQUqXg3",
+      "x": -1182.3529411764712,
+      "y": 112.50000000000003,
+      "type": "string_replace",
+      "width": 200,
+      "connections": {
+        "inputs": {},
+        "outputs": {
+          "string": [
+            {
+              "nodeId": "oP6cKmLTk3",
+              "portName": "source"
+            }
+          ]
+        }
+      },
+      "inputData": {
+        "source": {
+          "string": "https://api.polygon.io/v2/aggs/ticker/{STOCK}/range/1/day/{START}/{END}?adjusted=true&sort=asc&limit=120&apiKey=MQC772yyehFPcRrkUAucY142wQsRK8AI"
+        },
+        "find": {
+          "string": "{STOCK}"
+        },
+        "replace": {
+          "string": "TSLA"
+        },
+        "all": {
+          "boolean": false
+        }
+      }
+    },
+    "oP6cKmLTk3": {
+      "id": "oP6cKmLTk3",
+      "x": -951.4705882352945,
+      "y": 115.44117647058827,
+      "type": "string_replace",
+      "width": 200,
+      "connections": {
+        "inputs": {
+          "source": [
+            {
+              "nodeId": "PJIYQUqXg3",
+              "portName": "string"
+            }
+          ]
+        },
+        "outputs": {
+          "string": [
+            {
+              "nodeId": "4hUW9g7omS",
+              "portName": "source"
+            }
+          ]
+        }
+      },
+      "inputData": {
+        "source": {
+          "string": ""
+        },
+        "find": {
+          "string": "{START}"
+        },
+        "replace": {
+          "string": "2020-01-01"
+        },
+        "all": {
+          "boolean": false
+        }
+      }
+    },
+    "4hUW9g7omS": {
+      "id": "4hUW9g7omS",
+      "x": -702.9411764705885,
+      "y": 113.97058823529416,
+      "type": "string_replace",
+      "width": 200,
+      "connections": {
+        "inputs": {
+          "source": [
+            {
+              "nodeId": "oP6cKmLTk3",
+              "portName": "string"
+            }
+          ]
+        },
+        "outputs": {
+          "string": [
+            {
+              "nodeId": "VlJtfCA5SI",
+              "portName": "url"
+            }
+          ]
+        }
+      },
+      "inputData": {
+        "source": {
+          "string": ""
+        },
+        "find": {
+          "string": "{END}"
+        },
+        "replace": {
+          "string": "2022-01-13"
+        },
+        "all": {
+          "boolean": false
+        }
+      }
+    },
+    "VlJtfCA5SI": {
+      "id": "VlJtfCA5SI",
+      "x": -466.1764705882355,
+      "y": 166.9117647058824,
+      "type": "http_fetch",
+      "width": 200,
+      "connections": {
+        "inputs": {
+          "url": [
+            {
+              "nodeId": "4hUW9g7omS",
+              "portName": "string"
+            }
+          ]
+        },
+        "outputs": {
+          "body": [
+            {
+              "nodeId": "FpPcrfVlM8",
+              "portName": "json"
+            }
+          ]
+        }
+      },
+      "inputData": {
+        "url": {
+          "string": ""
+        }
+      }
+    },
+    "FpPcrfVlM8": {
+      "id": "FpPcrfVlM8",
+      "x": -235.29411764705893,
+      "y": 222.7941176470589,
+      "type": "json_parse",
+      "width": 200,
+      "connections": {
+        "inputs": {
+          "json": [
+            {
+              "nodeId": "VlJtfCA5SI",
+              "portName": "body"
+            }
+          ]
+        },
+        "outputs": {
+          "data": [
+            {
+              "nodeId": "fNresXa4a-",
+              "portName": "data"
+            }
+          ]
+        }
+      },
+      "inputData": {
+        "json": {
+          "string": ""
+        }
+      }
+    },
+    "fNresXa4a-": {
+      "id": "fNresXa4a-",
+      "x": -11.538461538461544,
+      "y": 269.8717948717949,
+      "type": "data_select",
+      "width": 200,
+      "connections": {
+        "inputs": {
+          "data": [
+            {
+              "nodeId": "FpPcrfVlM8",
+              "portName": "data"
+            }
+          ]
+        },
+        "outputs": {
+          "data": [
+            {
+              "nodeId": "8ih8P_hWI4",
+              "portName": "array"
+            }
+          ]
+        }
+      },
+      "inputData": {
+        "data": {},
+        "query": {
+          "string": "$.results[*].c"
+        },
+        "array": {
+          "boolean": true
+        }
+      }
+    },
+    "8ih8P_hWI4": {
+      "id": "8ih8P_hWI4",
+      "x": 243.58974358974368,
+      "y": 109.61538461538464,
+      "type": "add_values_to_array_object",
+      "width": 200,
+      "connections": {
+        "inputs": {
+          "array_of_objects": [
+            {
+              "nodeId": "LK3Q4l6GyZ",
+              "portName": "data"
+            }
+          ],
+          "array": [
+            {
+              "nodeId": "fNresXa4a-",
+              "portName": "data"
+            }
+          ]
+        },
+        "outputs": {
+          "data": [
+            {
+              "nodeId": "7AlHIktEWO",
+              "portName": "data"
+            }
+          ]
+        }
+      },
+      "inputData": {
+        "array_of_objects": {},
+        "array": {},
+        "key": {
+          "string": "tsla"
+        }
+      }
+    }
+  },
+  "customNodes": []
+}
