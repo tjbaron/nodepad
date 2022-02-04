@@ -1,4 +1,5 @@
 import * as math from "mathjs"
+import { portTypes } from "../portTypes";
 
 // List of operations from mathjs we want to make available
 const supported_operations = [
@@ -35,9 +36,13 @@ export const mathNodeTypes = [
                     { name: e, label: e, type: 'any' }
                 )),
             ],
-            outputs: (ports: any) => [
-                {name: 'result', label: 'result', type: 'any'},
-            ],
+            outputs: (ports: any) => (inputData: any, connections: any) => {
+                const xInputName = connections.inputs?.x?.[0]?.portName; // portType is not available...
+                let type = portTypes.find((p) => p.type === xInputName) ? xInputName : 'any';
+                return [
+                    {name: 'result', label: 'result', type},
+                ];
+            },
             code: async (inputValues: any) => {
                 // const math = await import('mathjs');
                 const math_op = math[op.name];
