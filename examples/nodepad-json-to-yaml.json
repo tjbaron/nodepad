@@ -1,0 +1,138 @@
+{
+  "graph": {
+    "_Vwe_fXmih": {
+      "x": 400,
+      "y": -76,
+      "type": "output",
+      "width": 200,
+      "connections": {
+        "inputs": {
+          "result": [
+            {
+              "nodeId": "3qr0ezWuq9",
+              "portName": "string"
+            }
+          ]
+        },
+        "outputs": {}
+      },
+      "inputData": {
+        "result": {}
+      },
+      "root": true,
+      "id": "_Vwe_fXmih"
+    },
+    "_Cj1-eIjtO": {
+      "id": "_Cj1-eIjtO",
+      "x": -65.43639078305637,
+      "y": -134.57514591988803,
+      "type": "to_yaml",
+      "width": 200,
+      "connections": {
+        "inputs": {
+          "object": [
+            {
+              "nodeId": "vLeeFcgN-J",
+              "portName": "data"
+            }
+          ]
+        },
+        "outputs": {
+          "yaml": [
+            {
+              "nodeId": "3qr0ezWuq9",
+              "portName": "string"
+            }
+          ]
+        }
+      },
+      "inputData": {
+        "object": {}
+      }
+    },
+    "vLeeFcgN-J": {
+      "id": "vLeeFcgN-J",
+      "x": -305.349713805094,
+      "y": -163.89308334085985,
+      "type": "json_parse",
+      "width": 200,
+      "connections": {
+        "inputs": {
+          "json": [
+            {
+              "nodeId": "rxCKU_a_i-",
+              "portName": "string"
+            }
+          ]
+        },
+        "outputs": {
+          "data": [
+            {
+              "nodeId": "_Cj1-eIjtO",
+              "portName": "object"
+            }
+          ]
+        }
+      },
+      "inputData": {
+        "json": {
+          "string": "{\"a\": {\"a\": 1, \"b\": 3}}"
+        }
+      }
+    },
+    "3qr0ezWuq9": {
+      "id": "3qr0ezWuq9",
+      "x": 167.20521077944366,
+      "y": -104.71388976697978,
+      "type": "show_string",
+      "width": 200,
+      "connections": {
+        "inputs": {
+          "string": [
+            {
+              "nodeId": "_Cj1-eIjtO",
+              "portName": "yaml"
+            }
+          ]
+        },
+        "outputs": {
+          "string": [
+            {
+              "nodeId": "_Vwe_fXmih",
+              "portName": "result"
+            }
+          ]
+        }
+      },
+      "inputData": {
+        "string": {
+          "string": ""
+        }
+      }
+    },
+    "rxCKU_a_i-": {
+      "id": "rxCKU_a_i-",
+      "x": -533.8872832369942,
+      "y": -233.2023135499458,
+      "type": "input_string",
+      "width": 200,
+      "connections": {
+        "inputs": {},
+        "outputs": {
+          "string": [
+            {
+              "nodeId": "vLeeFcgN-J",
+              "portName": "json"
+            }
+          ]
+        }
+      },
+      "inputData": {
+        "description": {
+          "string": "Paste your json here"
+        }
+      }
+    }
+  },
+  "customNodes": []
+}

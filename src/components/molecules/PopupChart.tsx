@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import * as React from 'react';
 import { useState } from "react";
-import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { renderChart } from "../../nodeTypes/charts";
 import { Button } from "../atoms/Button";
 import { Popup } from "../atoms/Popup";
@@ -15,12 +14,25 @@ const lineColors = [
     'rgb(255,255,144)',
 ];
 
-export const LineChartPopup = () => {
-    const [lineChartData, setLineChartData] = useState({
+export const PopupLineChart = () => {
+    const defaultData = {
         data: null, x: 'x', y: 'y', xistimestamp: false, onClose: null
-    });
+    };
+    const [lineChartData, setLineChartData] = useState(defaultData);
+    const [recharts, setRecharts] = useState(null);
+
+    React.useEffect(() => {
+        if (lineChartData) {
+            (async () => {
+                const lib = await import('recharts');
+                setRecharts(lib);
+            })();
+        }
+    }, lineChartData.data);
+
     renderChart.lineChart = setLineChartData;
-    if (!lineChartData?.data) return <></>;
+    if (!lineChartData?.data || !recharts) return <></>;
+    const { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } = recharts;
 
     const lines = [];
     for (var i=0; i<lineColors.length; i++) {
@@ -29,9 +41,9 @@ export const LineChartPopup = () => {
         lines.push(<Line type="monotone" dataKey={(lineChartData as any)[key]} stroke={lineColors[i]} />);
     };
 
-    return <ChartPopup>
+    return <PopupChart>
         <Button onClick={() => {
-            setLineChartData(null);
+            setLineChartData(defaultData);
             lineChartData.onClose?.();
         }}>Close</Button>
         <ResponsiveContainer>
@@ -42,11 +54,11 @@ export const LineChartPopup = () => {
                 <Tooltip />
             </LineChart>
         </ResponsiveContainer>
-    </ChartPopup>
+    </PopupChart>
   };
 
-const ChartPopup = styled(Popup)`
-    inset: 30px;
+const PopupChart = styled(Popup)`
+    width: 90%; height: 90%;
     overflow: hidden;
     color: black;
 `;

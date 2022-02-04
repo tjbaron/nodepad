@@ -1,4 +1,5 @@
-import { popupData } from '../components/molecules/InputBox';
+import { popupData } from '../components/molecules/PopupInput';
+import { resultData } from '../components/molecules/PopupResult';
 import { NodeType } from '../helpers/runEngine';
 
 export const uiState = {
@@ -292,6 +293,21 @@ export const otherNodeTypes = [
                 o[inputValues.key] = inputValues.array[i];
             });
             return { data: inputValues.array_of_objects };
+        },
+    },
+    {
+        type: "show_string",
+        label: "show_string",
+        description: "Displays the string in a popup",
+        inputs: (ports: any) => [
+            { name: "string", label: "string", type: "string" }
+        ],
+        outputs: (ports: any) => [
+            { name: "string", label: "string", type: "string" }
+        ],
+        code: async (inputValues: any) => {
+            await resultData.display(inputValues.string);
+            return {string: inputValues.string};
         },
     },
 ];

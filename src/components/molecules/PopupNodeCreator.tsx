@@ -5,7 +5,7 @@ import { Button } from '../atoms/Button';
 import { Input } from '../atoms/Input';
 import { Popup } from '../atoms/Popup';
 
-export const NodeCreator = ({customNodeTypes, setCustomNodeTypes, setShowNodeCreate}: any) => {
+export const PopupNodeCreator = ({customNodeTypes, setCustomNodeTypes, setShowNodeCreate}: any) => {
         const [nodeName, setNodeName] = React.useState("");
         const [nodeDesc, setNodeDesc] = React.useState("");
         const [inputs, setInputs] = React.useState([] as {name: string, type: string}[]);

@@ -62,6 +62,11 @@ range
 - parse_yaml
 - parse_xml
 
+### Converters
+
+- to_json
+- to_yaml
+
 ### Object Querying
 
 - object_query

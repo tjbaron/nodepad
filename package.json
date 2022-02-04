@@ -14,7 +14,7 @@
   "dependencies": {
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
-    "@tjbaron/flume": "^0.7.3",
+    "@tjbaron/flume": "^0.7.5",
     "@types/jsonpath": "^0.2.0",
     "@types/react": "^17.0.36",
     "@types/react-dom": "^17.0.11",
@@ -35,7 +35,8 @@
     "webpack-bundle-analyzer": "^4.5.0",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.5.0",
-    "xpath": "^0.0.32"
+    "xpath": "^0.0.32",
+    "yaml": "^1.10.2"
   },
   "keywords": [],
   "description": "",

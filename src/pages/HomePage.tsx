@@ -6,12 +6,13 @@ import * as React from 'react';
 import { downloadText } from '../helpers/downloadText';
 import { importJson } from '../helpers/importJson';
 import { Button } from '../components/atoms/Button';
-import { LineChartPopup } from '../components/molecules/ChartPopup';
-import { InputBox } from '../components/molecules/InputBox';
+import { PopupLineChart } from '../components/molecules/PopupChart';
+import { PopupInput } from '../components/molecules/PopupInput';
 import { config, NodeType, remakeFlume, runEngine } from '../helpers/runEngine';
-import { NodeCreator } from '../components/molecules/NodeCreator';
+import { PopupNodeCreator } from '../components/molecules/PopupNodeCreator';
 import { CustomNodeItem } from '../components/molecules/CustomNode';
 import { uiState } from '../nodeTypes/other';
+import { PopupResult } from '../components/molecules/PopupResult';
 
 const downloadProject = (customNodes: any, graph: any) => {
   downloadText(`nodepad-export.json`, JSON.stringify({
@@ -104,9 +105,10 @@ export const HomePage = () => {
               />
           </FlumeThemeProvider>
       </EditorHolder>
-      <InputBox />
-      {showNodeCreate > -2 && <NodeCreator customNodeTypes={customNodeTypes} setCustomNodeTypes={setCustomNodeTypes} setShowNodeCreate={setShowNodeCreate} />}
-      <LineChartPopup />
+      <PopupInput />
+      <PopupResult />
+      <PopupLineChart />
+      {showNodeCreate > -2 && <PopupNodeCreator customNodeTypes={customNodeTypes} setCustomNodeTypes={setCustomNodeTypes} setShowNodeCreate={setShowNodeCreate} />}
     </>;
 };
 
