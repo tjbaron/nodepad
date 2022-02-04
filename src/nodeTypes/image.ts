@@ -77,4 +77,46 @@ export const imageNodeTypes = [
             return { string: 'ok' };     
         },
     },
+    {
+        type: "image_split_rgba",
+        label: "image_split_rgba",
+        description: "",
+        inputs: (ports: any) => [
+            { name: 'data', label: 'data', type: 'numberarray' },
+        ],
+        outputs: (ports: any) => [
+            { name: 'r', label: 'r', type: 'numberarray' },
+            { name: 'g', label: 'g', type: 'numberarray' },
+            { name: 'b', label: 'b', type: 'numberarray' },
+            { name: 'a', label: 'a', type: 'numberarray' },
+        ],
+        code: async ({data}: {data: number[]}) => {
+            const r = data.filter((d, i) => i%4 === 0);
+            const g = data.filter((d, i) => i%4 === 1);
+            const b = data.filter((d, i) => i%4 === 2);
+            const a = data.filter((d, i) => i%4 === 3);
+            return { r, g, b, a };
+        },
+    },
+    {
+        type: "image_merge_rgba",
+        label: "image_merge_rgba",
+        description: "",
+        inputs: (ports: any) => [
+            { name: 'r', label: 'r', type: 'numberarray' },
+            { name: 'g', label: 'g', type: 'numberarray' },
+            { name: 'b', label: 'b', type: 'numberarray' },
+            { name: 'a', label: 'a', type: 'numberarray' },
+        ],
+        outputs: (ports: any) => [
+            { name: 'data', label: 'data', type: 'numberarray' },
+        ],
+        code: async ({r, g, b, a}: any) => {
+            const data = [];
+            for (let i=0; i<r.length; i++) {
+                data.push(r[i], g[i], b[i], a[i]);
+            }
+            return { data };
+        },
+    },
 ];

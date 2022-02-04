@@ -11,7 +11,12 @@ const supported_operations = [
     {name: "abs", inputs: ["x"]},
     {name: "floor", inputs: ["x"]},
     {name: "ceil", inputs: ["x"]},
+    {name: "round", inputs: ["x"]},
     {name: "fix", inputs: ["x"]},
+    {name: "dot", inputs: ["x", "y"]},
+    {name: "dotMultiply", inputs: ["x", "y"]},
+    {name: "dotDivide", inputs: ["x", "y"]},
+    {name: "dotPow", inputs: ["x", "y"]},
     {name: "log", inputs: ["x"]},
     {name: "log2", inputs: ["x"]},
     {name: "log10", inputs: ["x"]},
@@ -27,11 +32,11 @@ export const mathNodeTypes = [
             description: (math.help(math[op.name])?.toJSON() as any)?.description || "",
             inputs: (ports: any) => [
                 ...op.inputs.map((e) => (
-                    { name: e, label: e, type: 'number' }
+                    { name: e, label: e, type: 'any' }
                 )),
             ],
             outputs: (ports: any) => [
-                {name: 'result', label: 'result', type: 'number'},
+                {name: 'result', label: 'result', type: 'any'},
             ],
             code: async (inputValues: any) => {
                 // const math = await import('mathjs');
@@ -54,7 +59,7 @@ export const mathNodeTypes = [
                 const vars = eqString.match(/[a-zA-Z_]+[a-zA-Z0-9_]*/g) || [];
                 console.log(vars);
                 for (const v of vars) {
-                    console.log(v);
+                    if (supported_operations.find((e) => v === e.name)) continue;
                     inp.push({name: v, label: v, type: 'any'});
                 }
             }    

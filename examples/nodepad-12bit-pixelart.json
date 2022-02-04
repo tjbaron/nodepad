@@ -1,0 +1,169 @@
+{
+  "graph": {
+    "RjFzyBiTDJ": {
+      "x": 1109.6154630109595,
+      "y": 197.9778550754549,
+      "type": "output",
+      "width": 200,
+      "connections": {
+        "inputs": {
+          "result": [
+            {
+              "nodeId": "MI4g0l8BjL",
+              "portName": "string"
+            }
+          ]
+        },
+        "outputs": {}
+      },
+      "inputData": {
+        "result": {}
+      },
+      "root": true,
+      "id": "RjFzyBiTDJ"
+    },
+    "9NEs9km61X": {
+      "id": "9NEs9km61X",
+      "x": 265.0053155485285,
+      "y": -137.0740618024554,
+      "type": "image_data",
+      "width": 200,
+      "connections": {
+        "inputs": {
+          "filearray": [
+            {
+              "nodeId": "nooSlmGm_T",
+              "portName": "filearray"
+            }
+          ]
+        },
+        "outputs": {
+          "width": [
+            {
+              "nodeId": "MI4g0l8BjL",
+              "portName": "width"
+            }
+          ],
+          "height": [
+            {
+              "nodeId": "MI4g0l8BjL",
+              "portName": "height"
+            }
+          ],
+          "numberarray": [
+            {
+              "nodeId": "O4mve873MW",
+              "portName": "a"
+            }
+          ]
+        }
+      },
+      "inputData": {
+        "filearray": {},
+        "width": {
+          "number": 32
+        },
+        "height": {
+          "number": 32
+        }
+      }
+    },
+    "MI4g0l8BjL": {
+      "id": "MI4g0l8BjL",
+      "x": 866.7168056998803,
+      "y": 119.42522864147956,
+      "type": "image_generate",
+      "width": 200,
+      "connections": {
+        "inputs": {
+          "width": [
+            {
+              "nodeId": "9NEs9km61X",
+              "portName": "width"
+            }
+          ],
+          "height": [
+            {
+              "nodeId": "9NEs9km61X",
+              "portName": "height"
+            }
+          ],
+          "numberarray": [
+            {
+              "nodeId": "O4mve873MW",
+              "portName": "number"
+            }
+          ]
+        },
+        "outputs": {
+          "string": [
+            {
+              "nodeId": "RjFzyBiTDJ",
+              "portName": "result"
+            }
+          ]
+        }
+      },
+      "inputData": {
+        "numberarray": {},
+        "width": {
+          "number": 0
+        },
+        "height": {
+          "number": 0
+        }
+      }
+    },
+    "nooSlmGm_T": {
+      "id": "nooSlmGm_T",
+      "x": 18.004057913115503,
+      "y": -134.3826941287879,
+      "type": "input_files",
+      "width": 200,
+      "connections": {
+        "inputs": {},
+        "outputs": {
+          "filearray": [
+            {
+              "nodeId": "9NEs9km61X",
+              "portName": "filearray"
+            }
+          ]
+        }
+      },
+      "inputData": {}
+    },
+    "O4mve873MW": {
+      "id": "O4mve873MW",
+      "x": 568.1064504794974,
+      "y": -80.42851200810185,
+      "type": "math_equation",
+      "width": 200,
+      "connections": {
+        "inputs": {
+          "a": [
+            {
+              "nodeId": "9NEs9km61X",
+              "portName": "numberarray"
+            }
+          ]
+        },
+        "outputs": {
+          "number": [
+            {
+              "nodeId": "MI4g0l8BjL",
+              "portName": "numberarray"
+            }
+          ]
+        }
+      },
+      "inputData": {
+        "equation": {
+          "string": "floor(a/64)*64"
+        },
+        "a": {}
+      }
+    }
+  },
+  "customNodes": []
+}
