@@ -164,7 +164,7 @@ export const otherNodeTypes = [
                     img.src = event.target.result as any;
                 }
                 reader.readAsDataURL(filearray[0]); 
-            });            
+            });      
         },
     },
     {
