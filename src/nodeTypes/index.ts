@@ -2,6 +2,7 @@ import { portTypes } from '../portTypes';
 import { brainNodeTypes } from './brain';
 import { chartNodeTypes } from './charts';
 import { imageNodeTypes } from './image';
+import { jsonNodeTypes } from './json';
 import { mathNodeTypes } from './math';
 import { otherNodeTypes } from './other';
 import { yamlNodeTypes } from './yaml';
@@ -13,4 +14,5 @@ export const nodeTypes = [
     ...mathNodeTypes,
     ...otherNodeTypes,
     ...yamlNodeTypes,
+    ...jsonNodeTypes,
 ];
