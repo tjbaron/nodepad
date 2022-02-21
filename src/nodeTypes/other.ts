@@ -221,21 +221,6 @@ export const otherNodeTypes = [
         },
     },
     {
-        type: "json_parse",
-        label: "json_parse",
-        description: "Make api call",
-        inputs: (ports: any) => [
-            {name: 'json', label: 'json', type: 'string'},
-        ],
-        outputs: (ports: any) => [
-            {name: 'data', label: 'data', type: 'any'}
-        ],
-        code: (inputValues: any) => {
-            const data = JSON.parse(inputValues.json);
-            return { data };
-        },
-    },
-    {
         type: "data_select",
         label: "data_select",
         description: "Select data from an object. See jsonpath on npm for syntax",

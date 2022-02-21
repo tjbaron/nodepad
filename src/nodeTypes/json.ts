@@ -11,12 +11,26 @@ export const jsonNodeTypes = [
         outputs: (ports: any) => [
             { name: 'json', label: 'json', type: 'string' },
         ],
-        code: async ({object, pretty}: any) => {
+        code: ({object, pretty}: any) => {
             if (pretty) {
                 return { yaml: JSON.stringify(object, null, 2) };
             } else {
                 return { yaml: JSON.stringify(object) };
             }
+        },
+    },
+    {
+        type: "json_parse",
+        label: "json_parse",
+        description: "Convert json string to object",
+        inputs: (ports: any) => [
+            { name: 'json', label: 'json', type: 'string' },
+        ],
+        outputs: (ports: any) => [
+            { name: 'object', label: 'object', type: 'any' }
+        ],
+        code: (inputValues: any) => {
+            return { object: JSON.parse(inputValues.json) };
         },
     },
 ];

@@ -15,4 +15,19 @@ export const yamlNodeTypes = [
             return { yaml: YAML.stringify(object) };    
         },
     },
+    {
+        type: "parse_yaml",
+        label: "parse_yaml",
+        description: "Convert yaml string to object",
+        inputs: (ports: any) => [
+            { name: 'yaml', label: 'yaml', type: 'string' },
+        ],
+        outputs: (ports: any) => [
+            { name: 'object', label: 'object', type: 'any' },
+        ],
+        code: async ({yaml}: any) => {
+            const YAML = await import('yaml');
+            return { yaml: YAML.parse(yaml) };    
+        },
+    },
 ];
