@@ -13,9 +13,9 @@ export const jsonNodeTypes = [
         ],
         code: ({object, pretty}: any) => {
             if (pretty) {
-                return { yaml: JSON.stringify(object, null, 2) };
+                return { json: JSON.stringify(object, null, 2) };
             } else {
-                return { yaml: JSON.stringify(object) };
+                return { json: JSON.stringify(object) };
             }
         },
     },

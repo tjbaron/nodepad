@@ -27,7 +27,7 @@ export const yamlNodeTypes = [
         ],
         code: async ({yaml}: any) => {
             const YAML = await import('yaml');
-            return { yaml: YAML.parse(yaml) };    
+            return { object: YAML.parse(yaml) };    
         },
     },
 ];
