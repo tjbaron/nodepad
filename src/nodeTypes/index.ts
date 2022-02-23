@@ -1,5 +1,6 @@
 import { brainNodeTypes } from './brain';
 import { chartNodeTypes } from './charts';
+import { csvNodeTypes } from './csv';
 import { imageNodeTypes } from './image';
 import { jsonNodeTypes } from './json';
 import { mathNodeTypes } from './math';
@@ -13,6 +14,7 @@ export const nodeTypes = [
     ...imageNodeTypes,
     ...mathNodeTypes,
     ...otherNodeTypes,
+    ...csvNodeTypes,
     ...yamlNodeTypes,
     ...jsonNodeTypes,
     ...xmlNodeTypes,

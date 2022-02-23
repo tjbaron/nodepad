@@ -36,6 +36,9 @@ module.exports = {
     alias: {
       '@mui/styled-engine': '@mui/styled-engine-sc',
     },
+    fallback: {
+      "stream": require.resolve("stream-browserify"),
+    },
   },
   module: {
     rules: [
