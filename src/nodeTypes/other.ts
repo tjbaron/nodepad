@@ -60,6 +60,20 @@ export const otherNodeTypes = [
         },
     },
     {
+        type: "array_length",
+        label: "array_length",
+        description: "Returns length of array",
+        inputs: (ports: any) => [
+            { name: 'array', label: 'array', type: 'any' },
+        ],
+        outputs: (ports: any) => [
+            { name: 'length', label: 'length', type: 'number' },
+        ],
+        code: ({array}: any) => {
+            return { length: array.length };
+        },
+    },
+    {
         // only used for subgraphs
         type: "input",
         label: "input",
