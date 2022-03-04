@@ -74,6 +74,20 @@ export const otherNodeTypes = [
         },
     },
     {
+        type: "array_sort",
+        label: "array_sort",
+        description: "Sorts an array",
+        inputs: (ports: any) => [
+            { name: 'array', label: 'array', type: 'any' },
+        ],
+        outputs: (ports: any) => [
+            { name: 'array', label: 'array', type: 'any' },
+        ],
+        code: ({array}: any) => {
+            return { array: array.sort() };
+        },
+    },
+    {
         // only used for subgraphs
         type: "input",
         label: "input",
