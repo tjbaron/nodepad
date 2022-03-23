@@ -238,12 +238,13 @@ export const otherNodeTypes = [
         description: "Make api call",
         inputs: (ports: any) => [
             {name: 'url', label: 'url', type: 'string'},
+            {name: 'options', label: 'options', type: 'any'},
         ],
         outputs: (ports: any) => [
             {name: 'body', label: 'body', type: 'string'}
         ],
         code: async (inputValues: any) => {
-            const r = await fetch(inputValues.url);
+            const r = await fetch(inputValues.url, inputValues?.options || {});
             const body = await r.text();
             return { body };
         },
