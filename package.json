@@ -22,6 +22,7 @@
     "brain.js": "^2.0.0-beta.4",
     "css-loader": "^6.5.1",
     "csv-string": "^4.1.0",
+    "exceljs": "^4.3.0",
     "graphql": "^16.0.1",
     "html-webpack-plugin": "^5.5.0",
     "jsonpath": "^1.1.1",
