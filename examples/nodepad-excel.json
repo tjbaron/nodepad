@@ -1,0 +1,111 @@
+{
+  "graph": {
+    "SuVxS82j4a": {
+      "x": 0,
+      "y": 0,
+      "type": "output",
+      "width": 200,
+      "connections": {
+        "inputs": {
+          "result": [
+            {
+              "nodeId": "QQ96v3TCTB",
+              "portName": "value"
+            }
+          ]
+        },
+        "outputs": {}
+      },
+      "inputData": {
+        "result": {}
+      },
+      "root": true,
+      "id": "SuVxS82j4a"
+    },
+    "rek1CEs1pB": {
+      "id": "rek1CEs1pB",
+      "x": -493.5,
+      "y": -98.5,
+      "type": "excel_open",
+      "width": 200,
+      "connections": {
+        "inputs": {
+          "file": [
+            {
+              "nodeId": "oVUT6bgFE8",
+              "portName": "filearray"
+            }
+          ]
+        },
+        "outputs": {
+          "excel": [
+            {
+              "nodeId": "QQ96v3TCTB",
+              "portName": "excel"
+            }
+          ]
+        }
+      },
+      "inputData": {
+        "file": {}
+      }
+    },
+    "QQ96v3TCTB": {
+      "id": "QQ96v3TCTB",
+      "x": -235.5,
+      "y": -65.5,
+      "type": "excel_value",
+      "width": 200,
+      "connections": {
+        "inputs": {
+          "excel": [
+            {
+              "nodeId": "rek1CEs1pB",
+              "portName": "excel"
+            }
+          ]
+        },
+        "outputs": {
+          "value": [
+            {
+              "nodeId": "SuVxS82j4a",
+              "portName": "result"
+            }
+          ]
+        }
+      },
+      "inputData": {
+        "excel": {},
+        "sheet": {
+          "number": 0
+        },
+        "row": {
+          "number": 1
+        },
+        "column": {
+          "number": 1
+        }
+      }
+    },
+    "oVUT6bgFE8": {
+      "id": "oVUT6bgFE8",
+      "x": -722.5,
+      "y": -105.5,
+      "type": "input_files",
+      "width": 200,
+      "connections": {
+        "inputs": {},
+        "outputs": {
+          "filearray": [
+            {
+              "nodeId": "rek1CEs1pB",
+              "portName": "file"
+            }
+          ]
+        }
+      },
+      "inputData": {}
+    }
+  },
+  "customNodes": []
+}
